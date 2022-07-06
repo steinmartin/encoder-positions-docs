@@ -1,0 +1,38 @@
+@startuml
+
+header GSI/FAIR 08.07.2022
+footer System/Network Diagram Potiboard 2., A. Bloch-Späth, M.Stein
+title Implementation with ZeroMQ or similar messaging library
+
+ legend top right
+   ARM-based STM32 Nucleo128 or MC Teensy 4.1 (Arduino)
+ endlegend
+
+nwdiag {
+  network 3-5V-Interrupt-Bus {
+    group {
+      color = "lightblue";
+       Encoder_1;
+       Encoder_2;
+       Encoder_n;
+       MicroController;
+    }
+
+    color = "gray"
+    Encoder_1 [shape = control];
+    Encoder_2 [shape = control];
+    Encoder_n [shape = control];
+    MicroController [shape = component];
+  }
+
+  network Network {
+    ACC-Net [shape = cloud];
+    PotiboardApp [shape = node, address = ZeroMQ];
+    MicroController [address = ZeroMQ];
+    group {
+      color = "lightgreen";
+      PotiboardApp;
+    }
+  }
+}
+@enduml
