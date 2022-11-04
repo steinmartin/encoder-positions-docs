@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.15">
+<meta name="description" content="Sample document with custom header and footer parts.">
+<meta name="keywords" content="Asciidoctor, header, footer, docinfo">
+<meta name="author" content="Achim Bloch-Späth &lt;a.bloch-spaeth@gsi.de&gt;, Martin Stein &lt;m.stein@gsi.de&gt;">
+<title>Technologie-Evaluierung von Drehgebern und deren Anbindung an eine Java-basierte Potiboard-App</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div id="content">
+    <table border="0" width="100%">
+        <tr>
+            <td style="text-align: center;max-width:20%;">
+                <img src="common/meta/img/GSI_Logo_rgb.png" alt="GSI" width="120" height="40">
+                <br>
+                <img src="common/meta/img/FAIR_Logo_rgb.png" alt="FAIR"  width="80" height="60">
+            </td>
+            <td style="text-align: left;max-width:80%;font-size: 48px;">
+                    ACO - Application Support (APS)
+            </td>
+        </tr>
+    </table>
+</div>
+</head>
+<body class="article">
+<div id="header">
+<h1>Technologie-Evaluierung von Drehgebern und deren Anbindung an eine Java-basierte Potiboard-App</h1>
+<div class="details">
+<span id="author" class="author">Achim Bloch-Späth &lt;a.bloch-spaeth@gsi.de&gt;, Martin Stein &lt;m.stein@gsi.de&gt;</span><br>
+<span id="revnumber">version 1.1,</span>
+<span id="revdate">November 9, 2022</span>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_einbindung_dieser_arbeit_in_das_laufende_projekt_fcc_digital_potiboard">Einbindung dieser Arbeit in das laufende Projekt <em>FCC Digital Potiboard</em></a></li>
+<li><a href="#_rückblick_und_motivation">Rückblick und Motivation</a></li>
+<li><a href="#_vom_alten_potiboard_prototyp_übernommende_technologieentscheidungen_und_neue_wege">Vom alten Potiboard-Prototyp übernommende Technologieentscheidungen und neue Wege</a></li>
+<li><a href="#_sammlung_von_diskutierten_anforderungen_stichwortliste">Sammlung von diskutierten Anforderungen (Stichwortliste)</a></li>
+<li><a href="#_noch_in_evaluierung_stehende_alternative_system_architekturen_und_technologien">Noch in Evaluierung stehende alternative System-Architekturen und Technologien</a></li>
+<li><a href="#_fazit">Fazit</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_einbindung_dieser_arbeit_in_das_laufende_projekt_fcc_digital_potiboard">Einbindung dieser Arbeit in das laufende Projekt <em>FCC Digital Potiboard</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Die hier beschriebene Technologie-Evaluierung dient als Grundlage zur Entscheidungsfindung zu den in der <a href="#figure-1">Abbildung: Status FCC Digital Potiboard </a> markierten <em>Major Milestones</em> und <em>Subprojects / Tasks</em>.</p>
+</div>
+<div id="figure-1" class="imageblock bottom">
+<div class="content">
+<img src="common/img/potiboard-status-20220708.png" alt="Status-Project">
+</div>
+<div class="title">Figure 1. Status FCC Digital Potiboard</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rückblick_und_motivation">Rückblick und Motivation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Der vor ca. 6 Jahren entwickelte Potiboard-Prototyp wurde in einem der vergangenen Potiboard-Meetings als unzureichend in seiner Technologieauswahl eingestuft.
+Insbesondere der Einsatz einer "closed source library" des benutzten Phidget-Mikrocontroller, der zur Verarbeitung der Encodersignale dient, wurde kritisiert.
+Dessen Treiber läuft zudem nicht im "Userspace" auf dem zu benutzenden Linuxderivat, was aus system-administrativer Sicht ein Nachteil ist.</p>
+</div>
+<div class="paragraph">
+<p>Eine weitere Anforderung der Zukunft (FCC) <strong>könnte sein</strong>, dass die Drehgeber ihre Inkremente an eine Potiboard-App über eine nicht unerhebliche Entfernung übermittelt werden müssen. Diese Anforderung ist bis zum jetztigen Zeitpunkt noch nicht festgelegt und wurde beim alten Potiboard-Prototyp gar nicht diskutiert.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vom_alten_potiboard_prototyp_übernommende_technologieentscheidungen_und_neue_wege">Vom alten Potiboard-Prototyp übernommende Technologieentscheidungen und neue Wege</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Optische "Rotary Quadrature Encoder" wurden wieder wegen ihrer Signalqualität, Zuverlässigkeit und Verfügbarkeit eingesetzt. Auf kugelgelagerte Modelle wurde diesmal verzichtet (Haptikgründe wegen zu hoher Leichtgängigkeit).Merkmale sind 16-128 Pulse pro 360-Rotation, keine Zahnung, 5 V. 3.3V Modelle waren auf dem Markt nicht erhältlich.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Beispiel-Encoder sind:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Grayhill 63R128</p>
+</li>
+<li>
+<p>Bourns ENA1J-B28-L00128L</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Durch den Einsatz von modernen Mikrocontrollern, deren Spannung an ihren I/O Kanälen häufig auf 3,3 V limitiert ist (anstatt 5V), schränkt sich dich Auswahl der möglichen Endcoder-Modelle deutlich ein. Eventuell müssten die Encoder-Ausgangsspannungen an den Eingängen der Mikrocontroller mit Pegelumsetzern (Level-Shifter) angepasst werden, wenn 5 V Encoder-Modelle eingesetzt werden müssen.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Es wurden wieder Mikrokontroller evaluiert, die die Inkremente der bis zu acht (8!) Encoder, ohne spürbare Zeitverzögerung, weiterverarbeiten können. Statt des im alten Prototypen verwendeten Phidget-Mikrocontroller (1047) wurden folgende Mikrocontroller stattdessen betrachtet:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Raspberry Pi 4</p>
+</li>
+<li>
+<p>STM32H7, STM32F7</p>
+</li>
+<li>
+<p>Teensy 4.1 (Arduino kompatibel)</p>
+</li>
+<li>
+<p>Raspberry Pi Pico</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Alle drei Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Hardware betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 30-100 US $.
+Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C oder Python geschrieben und gewartet werden.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sammlung_von_diskutierten_anforderungen_stichwortliste">Sammlung von diskutierten Anforderungen (Stichwortliste)</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="content">
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><input type="checkbox" data-item-complete="1" checked> Lebensdauer und Wartbarkeit Hardware</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Die Funktion der eingesetzten Drehgeber und Mirkocontroller muss durch Verfügbarkeit am Markt oder durch Reserveteile-Einlagerung für möglichst mehrere Jahrzehnte mit finanziell überschaubarem Aufwand absicherbar sein.</p>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><input type="checkbox" data-item-complete="1" checked> Lebensdauer und Wartbarkeit Software</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Die eingesetzte Software auf Mikrocontroller und auf Potiboard-App Seite sollte aus möglichst gut gepflegten und verständlichen Open-Source Projekten mit hoher Verbreitung stammen. Dies kann auch Auswirkungen auf die Wahl des Mikrocontrollers haben. Der notwendige selbst geschriebene Soure-Code sollte möglichst einfach wartbar sein.</p>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><input type="checkbox" data-item-complete="1" checked> Geschwindigkeit Signalübertragung</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Die vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte mind. zwischen 1 ms bis 10 ms (0.1 Hz - 1 Hz) liegen.</p>
+</div>
+</div>
+</div>
+<div class="imageblock bottom">
+<div class="content">
+<img src="common/img/potiboard_network_01.svg" alt="New Reference Implementation">
+</div>
+<div class="title">Figure 2. Test-Implementation 1</div>
+</div>
+<div class="paragraph">
+<p>Es wurde ein Referenzsystem, wie im oberen Bild dargestellt, auf Basis eines Teensy 4.1 Mikrocontrollers entwickelt, der die Inkremente der Encoder in hoher Geschwindigkeit bis in eine Beispiel-JavaFX-Applikation weiterreicht. Das Referenzsystem kann in einem späteren Meeting genauer vorgestellt werden.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Die im Referenzsystem eingesetzte Datenübermittlungstechnologie basiert auf der Technologie <code>Spring Webflux</code> und dem "Reactive Toolkit" <code>Project Reactor</code>. Sie wurde ausgewählt, da sie der "GSI Controls Server-Technologie" entspricht, die für die Operating-Applikationen im FCC und HKR eingesetzt werden soll und teilweise schon eingesetzt wird.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Ein Nachteil und in mancherlei Hinsicht sicher auch Vorteil dieser Architektur ist die Einführung eines Webflux-Servers (siehe Bild <code>EncoderPositionsServerPC</code>), der ein PC-System mit Controls-konformen OS sein sollte. Es ist also eine Schicht (<code>Tier</code>) notwendig, um die Inkremente der verschiedenen Encoder (z.B. im <code>WebFlux</code>-Format) zu versenden.</p>
+</div>
+<div class="paragraph">
+<p>Auf der Habenseite dieser Architektur steht die Anpassbarkeit und Wartbarkeit nach den Richtlinien der Controls Abteilung und damit eine sichere, kontrollierbare Netzwerkkommunikation im ACC-Netzwerk auf lange Sicht und keine Insellösung im ACC-Netz.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_noch_in_evaluierung_stehende_alternative_system_architekturen_und_technologien">Noch in Evaluierung stehende alternative System-Architekturen und Technologien</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image"><img src="common/img/potiboard_network_02.svg" alt="Simpler Network and System Architecture."></span></p>
+</div>
+<div class="paragraph">
+<p>Eine vereinfachte Architektur könnte der Einsatz einer "leichteren Netzwerk-Übertragungstechnologie" (im Vergleich mit <code>Spring WebFlux</code>) mit sich bringen. Ein Kanditat ist zum Beispiel die Technolgie <code>ZeroMQ</code>, die sich von einem Raspberry Pi 4 aus leicht einsetzen läßt. Ausstehend sind noch  Evaluierungen der Netzwerkkommunikationsmöglichkeiten mit dem leistungsfähigen STM32 Micro-Controller.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fazit">Fazit</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Das Ziel dieser Technologie-Evaluierungen und Grundlage für eine neue Potiboard-Generation ist die Gegenüberstellung von mind. zwei möglichen Lösungen und deren Vergleich in Bezug auf Faktoren wie Kosten, Laufzeitverhalten, Wartbarkeit, System-Lebenserwartung, usw..</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 1.1<br>
+Last updated 2022-11-04 18:04:24 +0100
+</div>
+</div>
+<div id="content">
+<div class="sidebarblock">
+    <div class="content">
+        <div class="paragraph">
+            <p><a href="https://www.gsi.de/work/beschleunigerbetrieb/betrieb/mitarbeiter.htm">OPE</a></p>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
