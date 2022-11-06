@@ -46,9 +46,10 @@ Durch den Einsatz von modernen Mikrocontrollern, deren Spannung an ihren I/O Kan
 ** Teensy 4.1 (Arduino kompatibel)
 ** Raspberry Pi Pico
 
+Bitte Bilder anhängen
 
-Alle drei Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Hardware betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 30-100 US $.
-Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C oder Python geschrieben und gewartet werden.
+Alle drei Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Software betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 6-80 US $.
+Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C, Python oder Assembler geschrieben und gewartet werden.
 
 
 == Sammlung von diskutierten Anforderungen (Stichwortliste)
@@ -71,6 +72,12 @@ Die eingesetzte Software auf Mikrocontroller und auf Potiboard-App Seite sollte 
 
 Die vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte mind. zwischen 1 ms bis 10 ms (0.1 Hz - 1 Hz) liegen.
 ====
+
+== Generelle Hardware-Komponenten-Architekturüberlegungen
+
+[[figure-2]]
+.UML-Komponenten Diagram Network Connection with Spring Webflux
+image::komponenten-uml-01.svg[New Reference Implementation,role="bottom"]
 
 
 .Test-Implementation 1

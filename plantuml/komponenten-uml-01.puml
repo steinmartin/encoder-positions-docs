@@ -1,0 +1,19 @@
+@startuml
+
+header GSI/FAIR 08.07.2022
+footer Deployment Diagram Potiboard Webflux, A. Bloch-Späth, M.Stein
+title Reference Implementation with Spring WebFlux
+
+ legend top right
+   ARM-based MC Teensy 4.1 (Arduino) or STM32
+ endlegend
+
+node tcl100 #aliceblue;line:blue;line.dotted;text:blue
+node concentratorPC
+node microprocessor
+node encoder
+microprocessor *-- encoder : Serial
+concentratorPC -- microprocessor : USB Serial, USB-HID, USB-MIDI
+tcl100 -- concentratorPC : Network, e.g. Spring Webflux
+
+@enduml
