@@ -1,0 +1,17 @@
+@startuml
+
+header GSI/FAIR 03.11.2022
+footer Deployment Diagram Potiboard Network or USB, A. Bloch-Späth, M.Stein
+title Network technologies to connect
+
+' legend top right
+'   ARM-based MC Teensy 4.1 (Arduino) or STM32
+' endlegend
+
+node tcl100 #lightgreen;line:black;text:black
+node microprocessor #lightblue;line:black;text:black
+node encoder #lightblue;line:black;text:black
+microprocessor *-- encoder : Serial
+' tcl100 -- microprocessor : USB-Serial, USB-HID, USB-Midi
+tcl100 -- microprocessor : Network, e.g. Socket or ZeroMQ
+@enduml

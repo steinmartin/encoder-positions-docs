@@ -1,11 +1,11 @@
 @startuml
-@
+
 header GSI/FAIR 08.07.2022
-footer System/Network Diagram Potiboard 1., A. Bloch-Späth, M.Stein
-title Reference Implementation with USB-serial and Spring WebFlux
+footer System/Network Diagram Potiboard 2., A. Bloch-Späth, M.Stein
+title Implementation with ZeroMQ or similar messaging library
 
  legend top right
-   ARM-based MC Teensy 4.1 (Arduino) or STM32
+   Raspberry PI or MC Teensy 4.1 (Arduino)
  endlegend
 
 nwdiag {
@@ -15,8 +15,7 @@ nwdiag {
        Encoder_1;
        Encoder_2;
        Encoder_n;
-      MicroController;
-      EncoderPositionsServerPC;
+       MicroController;
     }
 
     color = "gray"
@@ -24,16 +23,12 @@ nwdiag {
     Encoder_2 [shape = control];
     Encoder_n [shape = control];
     MicroController [shape = component];
-    'caption hello
   }
-
-  MicroController -- EncoderPositionsServerPC;
-  EncoderPositionsServerPC [shape = node, address = USB_serial_or_ethernet];
 
   network Network {
     ACC-Net [shape = cloud];
-    EncoderPositionsServerPC [shape = node, address = WebFlux];
-    PotiboardApp [shape = node, address = WebFlux];
+    PotiboardApp [shape = node, address = ZeroMQ];
+    MicroController [address = ZeroMQ];
     group {
       color = "lightgreen";
       PotiboardApp;

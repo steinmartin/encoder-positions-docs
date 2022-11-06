@@ -1,0 +1,15 @@
+@startuml
+
+header GSI/FAIR 03.11.2022
+footer General Deployment Diagram, A. Bloch-Späth, M.Stein
+title General topology for connecting a potiboard encoder device
+
+' legend top right
+'   ARM-based MC Teensy 4.1 (Arduino) or STM32
+' endlegend
+
+node tcl100 as "potiboard-app\n         on\n     tcl100" #lightgreen;line:black;text:black
+node potiboard_encoder_device #lightblue;line:black;text:black
+tcl100 -- potiboard_encoder_device : Network or USB
+
+@enduml
