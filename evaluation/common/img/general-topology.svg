@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="275px" preserveAspectRatio="none" style="width:552px;height:275px;" version="1.1" viewBox="0 0 552 275" width="552px" zoomAndPan="magnify"><defs><filter height="300%" id="fp9kozmanx9r2" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="101" x="439" y="9.2822">GSI/FAIR 03.11.2022</text><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="536" x="2" y="28.3486">General topology for connecting a potiboard encoder device</text><!--entity tcl100--><polygon fill="#90EE90" filter="url(#fp9kozmanx9r2)" points="195.5,50.5938,205.5,40.5938,332.5,40.5938,332.5,109.4844,322.5,119.4844,195.5,119.4844,195.5,50.5938" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="322.5" x2="331.5" y1="50.5938" y2="41.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="195.5" x2="322.5" y1="50.5938" y2="50.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="322.5" x2="322.5" y1="50.5938" y2="119.4844"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="97" x="210.5" y="73.5889">potiboard-app</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="18" x="210.5" y="89.8857">on</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="43" x="210.5" y="106.1826">tcl100</text><!--entity potiboard_encoder_device--><polygon fill="#ADD8E6" filter="url(#fp9kozmanx9r2)" points="152.5,206.5938,162.5,196.5938,375.5,196.5938,375.5,232.8906,365.5,242.8906,152.5,242.8906,152.5,206.5938" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="365.5" x2="374.5" y1="206.5938" y2="197.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="152.5" x2="365.5" y1="206.5938" y2="206.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="365.5" x2="365.5" y1="206.5938" y2="242.8906"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="183" x="167.5" y="229.5889">potiboard_encoder_device</text><!--link tcl100 to potiboard_encoder_device--><path d="M264,119.6958 C264,144.5056 264,175.6169 264,196.4702 " fill="none" id="tcl100-potiboard_encoder_device" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="101" x="265" y="162.6606">Network or USB</text><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="267" x="136.5" y="261.876">General Deployment Diagram, A. Bloch-Späth, M.Stein</text><!--
+@startuml
+
+header GSI/FAIR 03.11.2022
+footer General Deployment Diagram, A. Bloch-Späth, M.Stein
+title General topology for connecting a potiboard encoder device
+
+
+node tcl100 as "potiboard-app\n         on\n     tcl100" #lightgreen;line:black;text:black
+node potiboard_encoder_device #lightblue;line:black;text:black
+tcl100 - - potiboard_encoder_device : Network or USB
+
+@enduml
+
+PlantUML version 1.2018.13(Mon Nov 26 18:11:51 CET 2018)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.16+8-post-Debian-1deb10u1
+Operating System: Linux
+OS Version: 4.19.0-22-amd64
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

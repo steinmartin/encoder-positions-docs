@@ -41,7 +41,13 @@
 <li><a href="#_einbindung_dieser_arbeit_in_das_laufende_projekt_fcc_digital_potiboard">Einbindung dieser Arbeit in das laufende Projekt <em>FCC Digital Potiboard</em></a></li>
 <li><a href="#_rückblick_und_motivation">Rückblick und Motivation</a></li>
 <li><a href="#_vom_alten_potiboard_prototyp_übernommende_technologieentscheidungen_und_neue_wege">Vom alten Potiboard-Prototyp übernommende Technologieentscheidungen und neue Wege</a></li>
-<li><a href="#_sammlung_von_diskutierten_anforderungen_stichwortliste">Sammlung von diskutierten Anforderungen (Stichwortliste)</a></li>
+<li><a href="#_grundlegende_zentrale_anforderungen_stichwortliste">Grundlegende zentrale Anforderungen (Stichwortliste)</a></li>
+<li><a href="#_generelle_hardware_komponenten_architekturüberlegungen">Generelle Hardware-Komponenten-Architekturüberlegungen</a>
+<ul class="sectlevel2">
+<li><a href="#_komponentengruppen">Komponentengruppen</a></li>
+<li><a href="#_inkrementsignalübertragung_über_netzwerk_oder_usb">Inkrementsignalübertragung über Netzwerk oder USB</a></li>
+</ul>
+</li>
 <li><a href="#_noch_in_evaluierung_stehende_alternative_system_architekturen_und_technologien">Noch in Evaluierung stehende alternative System-Architekturen und Technologien</a></li>
 <li><a href="#_fazit">Fazit</a></li>
 </ul>
@@ -54,7 +60,7 @@
 <div class="paragraph">
 <p>Die hier beschriebene Technologie-Evaluierung dient als Grundlage zur Entscheidungsfindung zu den in der <a href="#figure-1">Abbildung: Status FCC Digital Potiboard </a> markierten <em>Major Milestones</em> und <em>Subprojects / Tasks</em>.</p>
 </div>
-<div id="figure-1" class="imageblock bottom">
+<div id="figure-1" class="imageblock text-center">
 <div class="content">
 <img src="common/img/potiboard-status-20220708.png" alt="Status-Project">
 </div>
@@ -71,7 +77,14 @@ Insbesondere der Einsatz einer "closed source library" des benutzten Phidget-Mik
 Dessen Treiber läuft zudem nicht im "Userspace" auf dem zu benutzenden Linuxderivat, was aus system-administrativer Sicht ein Nachteil ist.</p>
 </div>
 <div class="paragraph">
-<p>Eine weitere Anforderung der Zukunft (FCC) <strong>könnte sein</strong>, dass die Drehgeber ihre Inkremente an eine Potiboard-App über eine nicht unerhebliche Entfernung übermittelt werden müssen. Diese Anforderung ist bis zum jetztigen Zeitpunkt noch nicht festgelegt und wurde beim alten Potiboard-Prototyp gar nicht diskutiert.</p>
+<p>Eine weitere Anforderung der Zukunft (FCC) <strong>könnte sein</strong>, dass die Drehgeber ihre Inkremente an eine Potiboard-App über eine nicht unerhebliche Entfernung übermittelt werden müssen.
+Diese Anforderung wurde beim <a href="#figure-1">alten Potiboard-Prototyp</a> über eine hohe Integration der beteiligten Komponenten gelöst.
+Drehgeber wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in einem Gehäuse mit Netzwerkanschluss.</p>
+</div>
+<div id="figure-2" class="imageblock text-center">
+<div class="content">
+<img src="common/img/old-potiboard-prototype.png" alt="Generelle Komponenten">
+</div>
 </div>
 </div>
 </div>
@@ -89,10 +102,10 @@ Dessen Treiber läuft zudem nicht im "Userspace" auf dem zu benutzenden Linuxder
 <div class="ulist">
 <ul>
 <li>
-<p>Grayhill 63R128</p>
+<p>Grayhill 63R128, Stückpreis: 100 $</p>
 </li>
 <li>
-<p>Bourns ENA1J-B28-L00128L</p>
+<p>Bourns ENA1J-B28-L00128L, Stückpreis:60 $</p>
 </li>
 </ul>
 </div>
@@ -112,16 +125,16 @@ Dessen Treiber läuft zudem nicht im "Userspace" auf dem zu benutzenden Linuxder
 <div class="ulist">
 <ul>
 <li>
-<p>Raspberry Pi 4</p>
+<p>Raspberry Pi 4, Stückpreis: 70 $</p>
 </li>
 <li>
-<p>STM32H7, STM32F7</p>
+<p>STM32H7, STM32F7, Stückpreis: 70 $</p>
 </li>
 <li>
-<p>Teensy 4.1 (Arduino kompatibel)</p>
+<p>Teensy 4.1 (Arduino kompatibel), Stückpreis: 40 $</p>
 </li>
 <li>
-<p>Raspberry Pi Pico</p>
+<p>Raspberry Pi Pico, Stückpreis: 8 $</p>
 </li>
 </ul>
 </div>
@@ -129,13 +142,16 @@ Dessen Treiber läuft zudem nicht im "Userspace" auf dem zu benutzenden Linuxder
 </ul>
 </div>
 <div class="paragraph">
-<p>Alle drei Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Hardware betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 30-100 US $.
-Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C oder Python geschrieben und gewartet werden.</p>
+<p>Bitte Bilder anhängen</p>
+</div>
+<div class="paragraph">
+<p>Alle drei Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Software betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 6-80 US $.
+Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C, Python oder Assembler geschrieben und gewartet werden.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sammlung_von_diskutierten_anforderungen_stichwortliste">Sammlung von diskutierten Anforderungen (Stichwortliste)</h2>
+<h2 id="_grundlegende_zentrale_anforderungen_stichwortliste">Grundlegende zentrale Anforderungen (Stichwortliste)</h2>
 <div class="sectionbody">
 <div class="exampleblock">
 <div class="content">
@@ -170,7 +186,7 @@ Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw.
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
-<p><input type="checkbox" data-item-complete="1" checked> Geschwindigkeit Signalübertragung</p>
+<p><input type="checkbox" data-item-complete="1" checked> Geschwindigkeit Signalübertragung der  Inkremente der Encoder</p>
 </li>
 </ul>
 </div>
@@ -179,11 +195,92 @@ Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw.
 </div>
 </div>
 </div>
-<div class="imageblock bottom">
-<div class="content">
-<img src="common/img/potiboard_network_01.svg" alt="New Reference Implementation">
 </div>
-<div class="title">Figure 2. Test-Implementation 1</div>
+</div>
+<div class="sect1">
+<h2 id="_generelle_hardware_komponenten_architekturüberlegungen">Generelle Hardware-Komponenten-Architekturüberlegungen</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_komponentengruppen">Komponentengruppen</h3>
+<div id="figure-3" class="imageblock text-center">
+<div class="content">
+<img src="common/img/general-topology.svg" alt="Generelle Komponenten">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inkrementsignalübertragung_über_netzwerk_oder_usb">Inkrementsignalübertragung über Netzwerk oder USB</h3>
+<table class="tableblock frame-none grid-none stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-right valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="common/img/komponenten-uml-02.svg" alt="Network">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="common/img/komponenten-uml-03.svg" alt="USB">
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="title">USB Nachteil</div>
+USB ist auf eine <strong>maximale Kabellänge</strong> von 5m spezifiziert. Mit guten Kabel und/oder Repeatern sind vielleicht bis zu 10m möglich.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">USB Vorteil</div>
+USB ist prinzipiell schneller, die Protokolle haben keinen Adressierungs-Overhead.
+Vieles ist dadurch einfacher, z.B. müssen Sender (Potiboard) und Empfängeradresse (Potiboard-App) nicht konfigurierbar programmiert werden.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">USB Vorteil</div>
+USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. Beim Netzwerk müßte zusätzliche Hardware (z.B. PoE) hinzugefügt werden, wenn 220V Anschluss vermieden werden soll.
+</td>
+</tr>
+</table>
+</div>
+<div id="figure-4" class="imageblock text-center">
+<div class="content">
+<img src="common/img/komponenten-uml-01.svg" alt="New Reference Implementation">
+</div>
+<div class="title">Figure 2. UML-Komponenten Diagram Network Connection with Spring Webflux</div>
+</div>
+<div id="figure-5" class="imageblock text-center">
+<div class="content">
+<img src="common/img/potiboard_network_01.svg" alt="Reference Implementation Network">
+</div>
+<div class="title">Figure 3. Test-Implementation 1</div>
 </div>
 <div class="paragraph">
 <p>Es wurde ein Referenzsystem, wie im oberen Bild dargestellt, auf Basis eines Teensy 4.1 Mikrocontrollers entwickelt, der die Inkremente der Encoder in hoher Geschwindigkeit bis in eine Beispiel-JavaFX-Applikation weiterreicht. Das Referenzsystem kann in einem späteren Meeting genauer vorgestellt werden.</p>
@@ -203,11 +300,13 @@ Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw.
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
 <h2 id="_noch_in_evaluierung_stehende_alternative_system_architekturen_und_technologien">Noch in Evaluierung stehende alternative System-Architekturen und Technologien</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><span class="image"><img src="common/img/potiboard_network_02.svg" alt="Simpler Network and System Architecture."></span></p>
+<div id="figure-6" class="paragraph">
+<div class="title">Test-Implementation 2</div>
+<p><span class="image"><img src="common/img/potiboard_network_02.svg" alt="Simpler Network and System Architecture"></span></p>
 </div>
 <div class="paragraph">
 <p>Eine vereinfachte Architektur könnte der Einsatz einer "leichteren Netzwerk-Übertragungstechnologie" (im Vergleich mit <code>Spring WebFlux</code>) mit sich bringen. Ein Kanditat ist zum Beispiel die Technolgie <code>ZeroMQ</code>, die sich von einem Raspberry Pi 4 aus leicht einsetzen läßt. Ausstehend sind noch  Evaluierungen der Netzwerkkommunikationsmöglichkeiten mit dem leistungsfähigen STM32 Micro-Controller.</p>
@@ -218,7 +317,8 @@ Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw.
 <h2 id="_fazit">Fazit</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Das Ziel dieser Technologie-Evaluierungen und Grundlage für eine neue Potiboard-Generation ist die Gegenüberstellung von mind. zwei möglichen Lösungen und deren Vergleich in Bezug auf Faktoren wie Kosten, Laufzeitverhalten, Wartbarkeit, System-Lebenserwartung, usw..</p>
+<p>Das Ziel dieser Technologie-Evaluierungen und Grundlage für eine neue Potiboard-Generation ist die Gegenüberstellung von mind. zwei möglichen Lösungen und deren Vergleich in Bezug auf Faktoren wie Kosten, Laufzeitverhalten, Wartbarkeit, System-Lebenserwartung, usw..
+&lt;&lt;</p>
 </div>
 </div>
 </div>
@@ -226,7 +326,7 @@ Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw.
 <div id="footer">
 <div id="footer-text">
 Version 1.1<br>
-Last updated 2022-11-04 18:04:24 +0100
+Last updated 2022-11-07 16:47:27 +0100
 </div>
 </div>
 <div id="content">

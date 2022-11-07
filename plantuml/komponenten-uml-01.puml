@@ -12,7 +12,8 @@ node tcl100 #lightgreen;line:black;text:black
 node concentratorPC #lightblue;line:black;text:black
 node microprocessor #lightblue;line:black;text:black
 node encoder #lightblue;line:black;text:black
-microprocessor *-- encoder : Serial
+
+microprocessor *-- encoder : GPIO
 concentratorPC -- microprocessor : USB-Serial or USB-HID or USB-MIDI
 tcl100 -- concentratorPC : Network, e.g. Webflux
 

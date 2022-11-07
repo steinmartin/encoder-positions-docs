@@ -1,15 +1,15 @@
 @startuml
 
-header GSI/FAIR 08.07.2022
+header GSI/FAIR 07.11.2022
 footer System/Network Diagram Potiboard 1., A. Bloch-Späth, M.Stein
-title Reference Implementation with USB-serial and Spring WebFlux
+title Reference Implementation with USB-Serial and Spring WebFlux
 
  legend top right
    ARM-based MC Teensy 4.1 (Arduino) or Raspberry PI Pico
  endlegend
 
 nwdiag {
-  network 3-5V-Interrupt-Bus {
+  network GPIO {
     group {
       color = "lightblue";
        Encoder_1;
@@ -18,20 +18,17 @@ nwdiag {
       MicroController;
       EncoderPositionsServerPC;
     }
-
     color = "gray"
     Encoder_1 [shape = control];
     Encoder_2 [shape = control];
     Encoder_n [shape = control];
     MicroController [shape = component];
-    'caption hello
+    MicroController -- EncoderPositionsServerPC;
+    EncoderPositionsServerPC [shape = node, address = USB-Serial];
   }
 
-  MicroController -- EncoderPositionsServerPC;
-  EncoderPositionsServerPC [shape = node, address = USB-Serial];
-
   network Network {
-    ACC-Net [shape = cloud];
+    ACC_Net [shape = cloud];
     EncoderPositionsServerPC [shape = node, address = WebFlux];
     PotiboardApp [shape = node, address = WebFlux];
     group {
@@ -41,3 +38,4 @@ nwdiag {
   }
 }
 @enduml
+

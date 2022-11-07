@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="365px" preserveAspectRatio="none" style="width:377px;height:365px;" version="1.1" viewBox="0 0 377 365" width="377px" zoomAndPan="magnify"><defs><filter height="300%" id="f1gphuk8zb6rfn" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="101" x="264" y="9.2822">GSI/FAIR 03.11.2022</text><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="361" x="2" y="28.3486">USB based encoder counter transmission</text><!--entity tcl100--><polygon fill="#90EE90" filter="url(#f1gphuk8zb6rfn)" points="71.5,50.5938,81.5,40.5938,154.5,40.5938,154.5,76.8906,144.5,86.8906,71.5,86.8906,71.5,50.5938" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="144.5" x2="153.5" y1="50.5938" y2="41.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="71.5" x2="144.5" y1="50.5938" y2="50.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="144.5" x2="144.5" y1="50.5938" y2="86.8906"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="43" x="86.5" y="73.5889">tcl100</text><!--entity microprocessor--><polygon fill="#ADD8E6" filter="url(#f1gphuk8zb6rfn)" points="39,173.5938,49,163.5938,187,163.5938,187,199.8906,177,209.8906,39,209.8906,39,173.5938" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="177" x2="186" y1="173.5938" y2="164.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="39" x2="177" y1="173.5938" y2="173.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="177" x2="177" y1="173.5938" y2="209.8906"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="108" x="54" y="196.5889">microprocessor</text><!--entity encoder--><polygon fill="#ADD8E6" filter="url(#f1gphuk8zb6rfn)" points="64,296.5938,74,286.5938,162,286.5938,162,322.8906,152,332.8906,64,332.8906,64,296.5938" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="152" x2="161" y1="296.5938" y2="287.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="64" x2="152" y1="296.5938" y2="296.5938"/><line style="stroke: #000000; stroke-width: 1.5;" x1="152" x2="152" y1="296.5938" y2="332.8906"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="58" x="79" y="319.5889">encoder</text><!--link microprocessor to encoder--><path d="M113,222.8078 C113,243.4267 113,268.6371 113,286.5622 " fill="none" id="microprocessor-encoder" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="113,209.7292,109,215.7292,113,221.7292,117,215.7292,113,209.7292" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="31" x="114" y="252.6606">GPIO</text><!--link tcl100 to microprocessor--><path d="M113,86.7292 C113,108.7196 113,141.6061 113,163.5622 " fill="none" id="tcl100-microprocessor" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="199" x="114" y="129.6606">USB-Serial, USB-HID, USB-Midi</text><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="301" x="32" y="351.876">Deployment Diagram Potiboard USB, A. Bloch-Späth, M.Stein</text><!--
+@startuml
+
+header GSI/FAIR 03.11.2022
+footer Deployment Diagram Potiboard USB, A. Bloch-Späth, M.Stein
+title USB based encoder counter transmission
+
+
+node tcl100 #lightgreen;line:black;text:black
+node microprocessor #lightblue;line:black;text:black
+node encoder #lightblue;line:black;text:black
+microprocessor *- - encoder : GPIO
+tcl100 - - microprocessor : USB-Serial, USB-HID, USB-Midi
+@enduml
+
+PlantUML version 1.2018.13(Mon Nov 26 18:11:51 CET 2018)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.16+8-post-Debian-1deb10u1
+Operating System: Linux
+OS Version: 4.19.0-22-amd64
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

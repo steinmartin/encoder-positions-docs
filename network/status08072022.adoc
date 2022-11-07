@@ -6,7 +6,7 @@ Rev. 1.0, July 8, 2022
 
 Der vor ca. 6 Jahren entwickelte Potiboard-Prototyp wurde in einem der vergangenen Potiboard-Meetings als unzureichend in seiner Technologieauswahl eingestuft. Insbesondere der Einsatz einer "closed source library" des benutzten Phidget-Mikrocontroller, der zur Verarbeitung der Encodersignale dient, wurde kritisiert. Dessen Treiber läuft zudem nicht im "Userspace" auf dem zu benutzenden Linuxderivat, was aus system-administrativer Sicht sicher ein Nachteil ist.
 
-Eine weitere Anforderung der Zukunft (FCC) könnte sein, dass die Drehgeber ihre Inkremente über Netzwerk derjenigen Applikation übermitteln müssen, die in letzter Instanz (LSA) die Inkremente den Magneten übermittelt. Diese Anforderung war beim alten Potiboard-Prototyp nicht gegeben und wurde damit nicht berücksichtigt.
+Eine weitere Anforderung der Zukunft (FCC) könnte sein, dass die Drehgeber ihre Inkremente über Netzwerk derjenigen Applikation übermitteln müssen, die in letzter Instanz (LSA) die Inkremente den Magneten übermittelt. Diese Anforderung wurden beim alten Potiboard-Prototyp durch ein voll integriertes System (in einem Gehäuse 8 Encoder inkl.Potiboard-App über Touchmonitor gesteuert) mit Netzwerkanschluss gelöst.
 
 === Vom alten Potiboard-Prototyp übernommende Technologieentscheidungen und neues Referenzsystem
 

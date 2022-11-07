@@ -1,15 +1,15 @@
 @startuml
 
-header GSI/FAIR 08.07.2022
+header GSI/FAIR 06.11.2022
 footer System/Network Diagram Potiboard 2., A. Bloch-Späth, M.Stein
-title Implementation with ZeroMQ or similar messaging library
+title Implementation with ZeroMQ or other messaging libraries
 
  legend top right
    Raspberry PI or MC Teensy 4.1 (Arduino)
  endlegend
 
 nwdiag {
-  network 3-5V-Interrupt-Bus {
+  network GPIO {
     group {
       color = "lightblue";
        Encoder_1;
@@ -26,13 +26,18 @@ nwdiag {
   }
 
   network Network {
-    ACC-Net [shape = cloud];
-    PotiboardApp [shape = node, address = ZeroMQ];
-    MicroController [address = ZeroMQ];
     group {
       color = "lightgreen";
       PotiboardApp;
     }
+    group {
+      color = "orange";
+      MQTTServer;
+    }
+  ACC_Net [shape = cloud];
+      PotiboardApp [shape = node, address = ZeroMQ/MQTT];
+      MQTTServer [shape = node, address = MQTT];
+      MicroController [address = ZeroMQ/MQTT];
   }
 }
 @enduml
