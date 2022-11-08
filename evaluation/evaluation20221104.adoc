@@ -55,7 +55,6 @@ ____
 ____
 
 
-
 == Vom alten Potiboard-Prototyp übernommende Technologieentscheidungen und neue Wege
 
 * Optische "Rotary Quadrature Encoder" wurden wieder wegen ihrer Signalqualität, Zuverlässigkeit und Verfügbarkeit eingesetzt. Auf kugelgelagerte Modelle wurde diesmal verzichtet (Haptikgründe wegen zu hoher Leichtgängigkeit).Merkmale sind 16-128 Pulse pro 360-Rotation, keine Zahnung, 5 V. 3.3V Modelle waren auf dem Markt nicht erhältlich.
@@ -183,10 +182,20 @@ Technologie|USB|Netzwerk|Hardware|Software|Administration|Geschwindigkeit|Duplex
 |====================
 
 
-
-
 == Fazit
-Das Ziel dieser Technologie-Evaluierungen und Grundlage für eine neue Potiboard-Generation ist die Gegenüberstellung von mind. zwei möglichen Lösungen und deren Vergleich in Bezug auf Faktoren wie Kosten, Laufzeitverhalten, Wartbarkeit, System-Lebenserwartung, usw..
+
+Wenn USB als Datenübertragungssystem für eine Potiboard-Prototypenentwickung als ausreichend bewertet wird,
+wäre der technische Vorschlag, für den ersten Protoypen die Encoder-Signale mit einem Arduino kompatiblen Mikrocontroller der Art Teensy 4.1 zu verarbeiten und von diesem aus die Inkrementzählerwerte über das USB-MIDI-Protokoll an die java-basierte Potiboard-Applikation weiterzuleiten.
+
+IMPORTANT: Der Teensy 4.1 ist ein kosteneffizienter, gut verfügbarer und hoch performanter 600 MHz ARM Cortex M7 Mikrocontroller. Seine über die Arduino-IDE leicht einbindbaren Open-Source Bibliotheken sind verbreitet und gut unterstützt, die eingesetzten Bibiotheken für die Encoder, sowie die USB-Serial, USB-HID und USB-Midi funktionierten schnell und problemlos.
+
+IMPORTANT: Das USB-Midi Protokoll bietet als einzige USB-Datenübertragungstechnologie echtes Plug-and-Play an einem Linux-basierten Host (wie z.B. TCL100). Auf der Java-Seite, also bei der Entwicklung und Wartung der Potiboard-Applikation, wird MIDI direkt von der `JRE` unterstützt durch die `Java Sound API`. D.h. es werden höchstwahrscheinlich nie zusätzliche Bibliotheken oder Abhängigkeiten notwendig sein. Diesen Vorteilen stand gegenüber eine leicht erhöhte Komplexität bei der Programmierung der Übertragungsdatenpakete und eine niedrigere aber noch ausreichende Datenübertragungsrate.
+
+Wenn USB als Datenübertragungssystem als eventuell nicht ausreichend bewertet wird, müsste die Evaluierung der netzwerk-basierten Technologien weitergeführt werden. Wahrscheinlich wäre eine rein socket-basierte Verbindung von einem netzwerk-fähigen Mikrocontroller zur java-basierten Potiboard-Applikation ein begehbarer Weg oder eine auf das ZeroMQ-Messaging basierende Übertragung zwischen Mikrokontroller und der Potiboard-Applikation.
+
+
+
+
 
 
 
