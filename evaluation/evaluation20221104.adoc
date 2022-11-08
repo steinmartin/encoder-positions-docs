@@ -37,7 +37,24 @@ Diese Anforderung wurde beim <<figure-1, alten Potiboard-Prototyp>> über eine h
 Drehgeber wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in einem Gehäuse mit Netzwerkanschluss.
 
 [[figure-2]]
-image::old-potiboard-prototype.png[Generelle Komponenten,align="center"]
+image::old-potiboard-prototype.png[Old potiboard prototype,align="center"]
+
+== Skizze des neuen Potiboard-Encoder-Device
+[[figure-22]]
+image::potiboard-skizze.png[Old potiboard prototype,align="center"]
+
+.Funktionsüberblick aus der Spezifikation
+[quote, Spezifikation: F-FO-CMD-en-0009_DS_Potiboard_v4_inprogress.docx]
+____
+* Button functions are:
+    • scroll back and forth (per button press by 4 devices to the right or left. In case of individual assignment, move one device to the right or left)
+    • deactivate the encoders (deactivation deselects all devices and triggers the LSA data supply)
+    • change the parameter view => volts, BRHO et cetera
+    • activate and deactivate the master mode (first partner knob controls both devices, second (third, fourth) partner is ignored
+    • change the increment
+____
+
+
 
 == Vom alten Potiboard-Prototyp übernommende Technologieentscheidungen und neue Wege
 
