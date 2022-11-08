@@ -64,45 +64,15 @@ ____
 
 Durch den Einsatz von modernen Mikrocontrollern, deren Spannung an ihren I/O Kanälen häufig auf 3,3 V limitiert ist (anstatt 5V), schränkt sich dich Auswahl der möglichen Endcoder-Modelle deutlich ein. Eventuell müssten die Encoder-Ausgangsspannungen an den Eingängen der Mikrocontroller mit Pegelumsetzern (Level-Shifter) angepasst werden, wenn 5 V Encoder-Modelle eingesetzt werden müssen.
 
-* Es wurden wieder Mikrokontroller evaluiert, die die Inkremente der bis zu acht (8!) Encoder, ohne spürbare Zeitverzögerung, weiterverarbeiten können. Statt des im alten Prototypen verwendeten Phidget-Mikrocontroller (1047) wurden folgende Mikrocontroller stattdessen betrachtet:
+* Es wurden wieder Mikrokontroller evaluiert, die die Inkremente der bis zu acht (8!) Encoder, ohne spürbare Zeitverzögerung, weiterverarbeiten können sollen. Statt des im alten Prototypen verwendeten Phidget-Mikrocontroller (1047) wurden folgende Mikrocontroller stattdessen betrachtet:
 ** Raspberry Pi 4, Stückpreis: 70 $
 ** STM32H7, STM32F7, Stückpreis: 70 $
 ** Teensy 4.1 (Arduino kompatibel), Stückpreis: 40 $
 ** Raspberry Pi Pico, Stückpreis: 8 $
 
-Bitte Bilder anhängen
 
-Alle drei Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Software betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 6-80 US $.
-Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C, Python oder Assembler geschrieben und gewartet werden.
-
-
-== Grundlegende zentrale Anforderungen (Stichwortliste)
-
-====
-[%interactive]
-* [*] Lebensdauer und Wartbarkeit Hardware
-
-Die Funktion der eingesetzten Drehgeber und Mirkocontroller muss durch Verfügbarkeit am Markt oder durch Reserveteile-Einlagerung für möglichst mehrere Jahrzehnte mit finanziell überschaubarem Aufwand absicherbar sein.
-====
-====
-[%interactive]
-* [*] Lebensdauer und Wartbarkeit Software
-
-Die eingesetzte Software auf Mikrocontroller und auf Potiboard-App Seite sollte aus möglichst gut gepflegten und verständlichen Open-Source Projekten mit hoher Verbreitung stammen. Dies kann auch Auswirkungen auf die Wahl des Mikrocontrollers haben. Der notwendige selbst geschriebene Soure-Code sollte möglichst einfach wartbar sein. 
-====
-====
-[%interactive]
-* [*] Geschwindigkeit Signalübertragung der Inkremente der Encoder
-
-Die vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte mind. zwischen 1 ms bis 10 ms (0.1 Hz - 1 Hz) liegen.
-====
-====
-[%interactive]
-* [*] Duplex-Signalübertragung, nicht nur für die Inkremente der Encoder in eine Richtung, sondern auch in der Gegenrichtung von der Portiboard-App zurück zum Potiboard-Encoder-Device. 
-
-Um die Benutzererfahrung am Potiboard-Encoder-Device zu verbessern, sollte es technisch möglich sein, Informationen wie Status der Verbindung, oder auch Magnet-Nomenklaturen an das Potiboard-Encoder-Device zu übertragen.
-====
-
+Alle Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Software betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 6-80 US $.
+Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C, Python oder Assembler geschrieben und gewartet werden. Das gleiche gilt für die verschiedenen Übertragungtechnologien zur Java-basierten Potiboard-Applikation. 
 
 == Generelle Hardware-Komponenten-Architekturüberlegungen
 
@@ -110,7 +80,6 @@ Um die Benutzererfahrung am Potiboard-Encoder-Device zu verbessern, sollte es te
 
 [[figure-3]]
 image::general-topology.svg[Generelle Komponenten, align="center"]
-
 
 
 === Inkrementzähler-Übertragung über Netzwerk oder USB
@@ -130,8 +99,11 @@ NOTE: USB ist prinzipiell schneller, die Protokolle haben keinen Adressierungs-O
 Vieles ist dadurch einfacher, z.B. müssen Sender (Potiboard) und Empfängeradresse (Potiboard-App) nicht konfigurierbar programmiert werden.
 
 .USB Vorteil
-NOTE: USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. Beim Netzwerk müßte zusätzliche Hardware (z.B. PoE) hinzugefügt werden, wenn 220V Anschluss vermieden werden soll. 
+NOTE: USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. Beim Netzwerk müßte zusätzliche Hardware (z.B. PoE) hinzugefügt werden, wenn ein Stromnetz-Anschluss vermieden werden soll (USB als nur zum Stromanschluss ginge natürlich auch). 
 
+== Netzwerkbasierte System-Architekturen und Technologien
+
+=== Testsystem mit der Technologie Spring Webflux
 
 [[figure-4]]
 .UML-Komponenten Diagram Network Connection with Spring Webflux
@@ -142,59 +114,114 @@ image::komponenten-uml-01.svg[New Reference Implementation, align="center"]
 .Test-Implementation 1
 image::potiboard_network_01.svg[Reference Implementation Network,align="center"]
 
-Es wurde ein Referenzsystem, wie im oberen Bild dargestellt, auf Basis eines Teensy 4.1 Mikrocontrollers entwickelt, der die Inkremente der Encoder in hoher Geschwindigkeit bis in eine Beispiel-JavaFX-Applikation weiterreicht. Das Referenzsystem kann in einem späteren Meeting genauer vorgestellt werden.
-
+Es wurde ein Referenzsystem, wie im oberen Bild dargestellt, auf Basis eines Teensy 4.1 Mikrocontrollers entwickelt, der die Inkremente der Encoder in hoher Geschwindigkeit bis in eine Beispiel-JavaFX-Applikation weiterreicht.
 ====
-Die im Referenzsystem eingesetzte Datenübermittlungstechnologie basiert auf der Technologie `Spring Webflux` und dem "Reactive Toolkit" `Project Reactor`. Sie wurde ausgewählt, da sie der "GSI Controls Server-Technologie" entspricht, die für die Operating-Applikationen im FCC und HKR eingesetzt werden soll und teilweise schon eingesetzt wird.
+Die im Referenzsystem eingesetzte Datenübermittlungstechnologie basiert auf der Technologie `Spring Webflux` und dem "Reactive Toolkit" `Project Reactor`. Sie wurde ausgewählt, da sie der "GSI Controls Applicationsservice-Technologieauswahl" entspricht, die für die Operating-Applikationen im FCC und HKR eingesetzt werden soll und teilweise schon eingesetzt wird.
 ====
 
-Ein Nachteil und in mancherlei Hinsicht sicher auch Vorteil dieser Architektur ist die Einführung eines Webflux-Servers (siehe Bild `EncoderPositionsServerPC`), der ein PC-System mit Controls-konformen OS sein sollte. Es ist also eine Schicht (`Tier`) notwendig, um die Inkremente der verschiedenen Encoder (z.B. im `WebFlux`-Format) zu versenden.
+Ein Nachteil und in mancherlei Hinsicht sicher auch Vorteil dieser Architektur ist die Einführung eines java-basierten (Spring-) Webflux-Servers (siehe Bild `EncoderPositionsServerPC`), der ein PC-System mit Controls-konformen OS sein sollte. Es ist also eine Schicht (`Tier`) notwendig, um die Inkremente der verschiedenen Encoder im `WebFlux`-Format zu versenden.
 
-Auf der Habenseite dieser Architektur steht die Anpassbarkeit und Wartbarkeit nach den Richtlinien der Controls Abteilung und damit eine sichere, kontrollierbare Netzwerkkommunikation im ACC-Netzwerk auf lange Sicht und keine Insellösung im ACC-Netz.
+Auf der Habenseite dieser Architektur steht die Anpassbarkeit und Wartbarkeit nach den Richtlinien der Controls-Abteilung und damit eine sichere, kontrollierbare Netzwerkkommunikation im ACC-Netzwerk auf lange Sicht und keine Insellösung im ACC-Netz.
 
-== Alternative netzwerkbasierte System-Architekturen und Technologien
+Eine vereinfachte Architektur könnte den Einsatz eines weiteren Rechners, wie der des Konzentrator-PCs, eingesetzt für als `Webflux`-Server, überflüssig machen. Die Instandhaltung des Rechners so wie die Wartung des Betriebssytems (z.B. Rocky Linux) erzeugt wiederkehrende Kosten. Deshalb wurden weitere netzwerk-basierte Technologien in Betracht gezogen.
+
+=== Testsysteme mit den Technologien ZeroMQ und MQTT
 
 [[figure-6]]
-.Test-Implementation
+.Test-Implementation 2
 image:potiboard_network_02.svg[Simpler Network and System Architecture, align="center"]
 
-Eine vereinfachte Architektur könnte den Einsatz eines weiteren Rechners, wie der des Konzentrator-PCs, eingesetzt für als `Webflux`-Client, überflüssig machen. Die Instandhaltung des Rechners so wie die Wartung des Betriebssytems (z.B. Rocky Linux) erzeugt wiederkehrende Kosten. Ein Kanditat für eine einfachere Architektur ist zum Beispiel die Technologie `ZeroMQ`, die sich mit einem Raspberry Pi 4, wie getestet, leicht einsetzen läßt.
+Ein Kanditat für eine einfachere Architektur ist zum Beispiel die Technologie `ZeroMQ`, die sich mit einem Raspberry Pi 4, wie getestet, leicht einsetzen läßt.
 
 Sehr interessant ist auch die `MQTT`-Technologie, die allerdings die Notwendigkeit des Aufsetzens eines `MQTT`-Servers nach sich ziehen würde und somit den Vorteil der Kostenersparnis zumindestens teilweise wieder verliert.
 
+== USB-basierte System-Architekturen und Technologien
+
+=== Testsystem mit der Technologie USB-Serial
+
+
+=== Testsystem mit der Technologie USB-HID
+
+
+=== Testsystem mit der Technologie USB-MIDI
+
+
+
+== Grundlegende zentrale Anforderungen (Stichwortliste)
+
+====
+[%interactive]
+* [*] Komplexität, Lebensdauer und Wartbarkeit Hardware
+
+Die Funktion der eingesetzten Drehgeber und Mirkocontroller muss durch Verfügbarkeit am Markt oder durch Reserveteile-Einlagerung für möglichst mehrere Jahrzehnte mit finanziell überschaubarem Aufwand absicherbar sein. Komplexe Systeme oder eine hohe Anzahl von verschiedenen benötigten Hardwarekomponenten sollte wenn möglich vermieden werden. 
+====
+====
+[%interactive]
+* [*] Komplexität, Lebensdauer und Wartbarkeit Software
+
+Die eingesetzte Software auf Mikrocontroller und auf Potiboard-Applikationsseite sollte aus möglichst gut gepflegten und verständlichen Open-Source Projekten mit hoher Verbreitung stammen. Dies kann auch Auswirkungen auf die Wahl des Mikrocontrollers haben. Der notwendige selbst geschriebene Soure-Code sollte möglichst einfach wartbar sein. Auf dem Mikrocontroller kommen die Programmiersprachen Assembler, C und Python in Frage, auf der Potiboard-Applikationsseite werden Java-basierte Lösungen preferiert.  
+====
+====
+[%interactive]
+* [*] **Administration**s-, Konfigurationsaufwand
+
+Der Aufwand für zusätzliche Hardware und Software, wie z.B. der KonzentratorPC für `Webflux` oder ein `MQTT-Server`(Linux-Administration, Hardwarepflege) oder zusätzliche Stromversorgungswege als auch der Aufwand für Konfigurationen (Netzwerk-Adressen-Pflege) sollte minimal gehalten werden. Unter diesen Punkt fallen auch notwendige Linux-Anpassungen z.B. auf den tcl100 Rechnern für den HKR.
+====
+====
+[%interactive]
+* [*] **Geschwindigkeit** Signalübertragung der Inkremente der Encoder
+
+Die vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte zwischen max. bei 10 ms (100 Hz) liegen, besser deutlich niedriger.
+====
+====
+[%interactive]
+* [*] **Duplex**-Signalübertragung, nicht nur für die Inkremente der Encoder in eine Richtung, sondern auch in der Gegenrichtung von der Portiboard-App zurück zum Potiboard-Encoder-Device. 
+
+Um die Benutzererfahrung am Potiboard-Encoder-Device zu verbessern, sollte es technisch möglich sein, Informationen wie Status der Verbindung, oder auch Magnet-Nomenklaturen an das Potiboard-Encoder-Device zu übertragen.
+====
+
+
 == Tabelle Technologiebewertung
 
-.Bewertung der Eigenschaften der verschiedenen Technologien
-[cols="h,l,l,l,l,l,l,l,l",width="100%",options="header"]
+.Versuch der Einordnung der Stärken und Schwächen der verschiedenen Technologien
+[%header%footer, cols="h,l,l,l,l,l,l,l,l",width="100%"]
 |====================
 |Eigenschaft
 --
-Technologie|USB|Netzwerk|Hardware|Software|Administration|Geschwindigkeit|Duplex|Sterne
+Technologie|USB|Netzwerk|Hardware|Software|Administration|Geschwindigkeit|Duplex| &sum; *
 |Webflux    | |X|*  |** |*  |** |***|  9
 |MQTT       | |X|*  |*  |*  |** |***|  8
-|ZeroMQ     | |X|** |** |*  |** |***| 10
-|Socket     | |X|** |*  |*  |***|** | 12
-|USB-Serial |X| |***|***|*  |***|** | 12
+|ZeroMQ     | |X|** |** |** |** |***| 11
+|Socket     | |X|** |**  |** |***|** | 11
+|USB-Serial |X| |***|***|** |***|** | 13
 |USB-HID    |X| |***|** |** |** |** | 11
 |USB-MIDI   |X| |***|***|***|*  |*  | 11
-|RS232/RS485| | |   |   |   |   |   |
-|MIDI (DIN) | | |   |   |   |   |   |
+|RS232/RS485| | |   |   |-  |   |   |
+|MIDI (DIN) | | |   |   |-  |   |   |
+| 8+|X = gehört zu, - = ungenügend, * = ausreichend , ** = gut, *** = sehr gut    |
 |====================
 
+Die Tabelle dient nur als Diskussionsgrundlage für die verschiedenen Technologien. Für einen Vergleich wären die verschiedenen Eigenschaften (Spalten) zu gewichten. Die &sum; * Spalte dient nicht der objektiven Bewertung;
 
 == Fazit
 
-Wenn USB als Datenübertragungssystem für eine Potiboard-Prototypenentwickung als ausreichend bewertet wird,
-wäre der technische Vorschlag, für den ersten Protoypen die Encoder-Signale mit einem Arduino kompatiblen Mikrocontroller der Art Teensy 4.1 zu verarbeiten und von diesem aus die Inkrementzählerwerte über das USB-MIDI-Protokoll an die java-basierte Potiboard-Applikation weiterzuleiten.
+Wenn USB als Datenübertragungssystem für Potiboard-Prototypentwickungen vorerst als ausreichend bewertet wird, wäre der technische Vorschlag, für den ersten Protoypen die Encoder-Signale mit einem Arduino kompatiblen Mikrocontroller der Art Teensy 4.1 zu verarbeiten und von diesem aus die Inkrementzählerwerte über das USB-MIDI-Protokoll an die java-basierte Potiboard-Applikation weiterzuleiten.
 
-IMPORTANT: Der Teensy 4.1 ist ein kosteneffizienter, gut verfügbarer und hoch performanter 600 MHz ARM Cortex M7 Mikrocontroller. Seine über die Arduino-IDE leicht einbindbaren Open-Source Bibliotheken sind verbreitet und gut unterstützt, die eingesetzten Bibiotheken für die Encoder, sowie die USB-Serial, USB-HID und USB-Midi funktionierten schnell und problemlos.
+IMPORTANT: Der Teensy 4.1 ist ein kosteneffizienter, gut verfügbarer und hoch performanter 600 MHz ARM Cortex M7 Mikrocontroller. Seine über die Arduino-IDE leicht einbindbaren Open-Source Bibliotheken sind verbreitet und gut unterstützt Die in den Tests eingesetzten Bibiotheken für Encoder sowie die USB-Serial-, USB-HID- und USB-Midi Bibliotheken funktionierten schnell und problemlos.
 
-IMPORTANT: Das USB-Midi Protokoll bietet als einzige USB-Datenübertragungstechnologie echtes Plug-and-Play an einem Linux-basierten Host (wie z.B. TCL100). Auf der Java-Seite, also bei der Entwicklung und Wartung der Potiboard-Applikation, wird MIDI direkt von der `JRE` unterstützt durch die `Java Sound API`. D.h. es werden höchstwahrscheinlich nie zusätzliche Bibliotheken oder Abhängigkeiten notwendig sein. Diesen Vorteilen stand gegenüber eine leicht erhöhte Komplexität bei der Programmierung der Übertragungsdatenpakete und eine niedrigere aber noch ausreichende Datenübertragungsrate.
+IMPORTANT: Das USB-Midi Protokoll bietet als einzige USB-Datenübertragungstechnologie echtes Plug-and-Play an einem Linux-basierten Host (wie z.B. TCL100).
+Auf der Java-Seite, also bei der Entwicklung und Wartung der Potiboard-Applikation, wird MIDI direkt von der `JRE` unterstützt durch die `Java Sound API`. D.h. es werden wahrscheinlich nie zusätzliche Bibliotheken oder Abhängigkeiten einzubinden sein.
+Diesen Vorteilen stehen gegenüber eine leicht erhöhte Komplexität bei der Programmierung der Übertragungsdatenpakete und eine niedrigere aber noch ausreichende Datenübertragungsrate.
 
-Wenn USB als Datenübertragungssystem als eventuell nicht ausreichend bewertet wird, müsste die Evaluierung der netzwerk-basierten Technologien weitergeführt werden. Wahrscheinlich wäre eine rein socket-basierte Verbindung von einem netzwerk-fähigen Mikrocontroller zur java-basierten Potiboard-Applikation ein begehbarer Weg oder eine auf das ZeroMQ-Messaging basierende Übertragung zwischen Mikrokontroller und der Potiboard-Applikation.
+Wenn USB als Datenübertragungssystem als möglicherweise nicht ausreichend bewertet wird, müsste die Evaluierung der netzwerk-basierten Technologien weitergeführt werden.
+Eine rein _socket-basierte_ Verbindung von einem netzwerk-fähigen Mikrocontroller zur java-basierten Potiboard-Applikation wäre ein begehbarer Weg oder eine auf das _ZeroMQ-Messaging_ basierende Übertragung zwischen Mikrokontroller und der Potiboard-Applikation..
 
 
+== Annex
 
+** GPS-System zur Uhrensynchronisation für Zeitmessungen mit ~  30 &#181;s Genauigkeit  
+** 7-Bit Arithmetische Kodierung zur Darstellung von Datentypengrößen größer als 7 Bit (>127) (MIDI-Anforderung)
+** Nutzung Statusregister für GPIO zur Vermeidung von CPU-Interrupts beim Raspberry PI Nano
 
 
 
