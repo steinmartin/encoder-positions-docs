@@ -103,10 +103,10 @@ NOTE: USB liefert out of the box ausreichend Strom für Drehgeber und Mikroproze
 
 == Netzwerkbasierte System-Architekturen und Technologien
 
-=== Testsystem mit der Technologie Spring Webflux
+=== Testsystem mit `Spring Webflux`
 
 [[figure-4]]
-.UML-Komponenten Diagram Network Connection with Spring Webflux
+.UML-Komponenten Diagram Netzwerkübertragung with `Spring Webflux`
 image::komponenten-uml-01.svg[New Reference Implementation, align="center"]
 
 
@@ -119,13 +119,13 @@ Es wurde ein Referenzsystem, wie im oberen Bild dargestellt, auf Basis eines Tee
 Die im Referenzsystem eingesetzte Datenübermittlungstechnologie basiert auf der Technologie `Spring Webflux` und dem "Reactive Toolkit" `Project Reactor`. Sie wurde ausgewählt, da sie der "GSI Controls Applicationsservice-Technologieauswahl" entspricht, die für die Operating-Applikationen im FCC und HKR eingesetzt werden soll und teilweise schon eingesetzt wird.
 ====
 
-Ein Nachteil und in mancherlei Hinsicht sicher auch Vorteil dieser Architektur ist die Einführung eines java-basierten (Spring-) Webflux-Servers (siehe Bild `EncoderPositionsServerPC`), der ein PC-System mit Controls-konformen OS sein sollte. Es ist also eine Schicht (`Tier`) notwendig, um die Inkremente der verschiedenen Encoder im `WebFlux`-Format zu versenden.
+Ein Nachteil und in mancherlei Hinsicht sicher auch Vorteil dieser Architektur ist die Einführung eines java-basierten `Webflux`-Servers (siehe Bild `EncoderPositionsServerPC`), der ein PC-System mit Controls-konformen OS sein sollte. Es ist also eine Schicht (_Tier_) notwendig, um die Inkremente der verschiedenen Encoder im `WebFlux`-Format zu versenden.
 
 Auf der Habenseite dieser Architektur steht die Anpassbarkeit und Wartbarkeit nach den Richtlinien der Controls-Abteilung und damit eine sichere, kontrollierbare Netzwerkkommunikation im ACC-Netzwerk auf lange Sicht und keine Insellösung im ACC-Netz.
 
 Eine vereinfachte Architektur könnte den Einsatz eines weiteren Rechners, wie der des Konzentrator-PCs, eingesetzt für als `Webflux`-Server, überflüssig machen. Die Instandhaltung des Rechners so wie die Wartung des Betriebssytems (z.B. Rocky Linux) erzeugt wiederkehrende Kosten. Deshalb wurden weitere netzwerk-basierte Technologien in Betracht gezogen.
 
-=== Testsysteme mit den Technologien ZeroMQ und MQTT
+=== Testsysteme mit `ZeroMQ` und `MQTT`
 
 [[figure-6]]
 .Test-Implementation 2
@@ -137,13 +137,54 @@ Sehr interessant ist auch die `MQTT`-Technologie, die allerdings die Notwendigke
 
 == USB-basierte System-Architekturen und Technologien
 
-=== Testsystem mit der Technologie USB-Serial
+=== Testsystem mit USB-Serial
 
+.Mikroprozessor-Seite
+Die USB-Serial Übertragung wurde hauptsächlich vom Mikroprozessor Teensy 4.1 aus getestet, da dieser auch für den netzwerk-basierten Test mit `Spring Webflux` zum Einsatz kam. Es wurde die Standard Arduino Bibliotek `Arduino.h` für das Schreiben auf der USB-seriellen Schnittstelle eingesetzt.
 
-=== Testsystem mit der Technologie USB-HID
+.Java-Applikationsseite
+Es wurde die gut gepflegte und verbreitete Java-Bibliothek https://fazecast.github.io/jSerialComm/[jSerialComm] genutzt um die seriellen Datenpakete in der Potiboard-Applikation zu empfangen.
 
+.Administration, Konfiguration
+Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen, z.B. auf den `tcl100`-Maschinen, die Notwendigkeit einer Rechtevergabe für den `user`, um unter Linux Zugriffrechte auf die Serielle Schnittstelle zu bekommen.
 
-=== Testsystem mit der Technologie USB-MIDI
+[source,ruby]
+----
+sudo usermod -a -G uucp username
+sudo usermod -a -G dialout username
+sudo usermod -a -G lock username
+sudo usermod -a -G tty username
+----
+
+=== Testsystem mit USB-HID
+.Mikroprozessor-Seite
+Wieder kam der Teensy 4.1 zum Einsatz, diesmal mit einer Teensy-speziellen Bibliothek https://github.com/PaulStoffregen/USBHost_t36/[USB Host Library for Teensy 3.6 and 4.0]. Mit dieser können USB-HID konform "Rohdaten" bis zu einer Länge von 64 Byte (und pro Millisekunde) in einem Datenpaket übertragen und empfangen werden.
+
+.Java-Applikationsseite
+Auf Java-Seite setzte sich eine sehr leichgewichtige Bibliothek durch, die https://github.com/nyholku/purejavahidapi[Pure Java HIDApi]. Sie bekam den Vorzug zur https://github.com/gary-rowe/hid4java[HID4Java], die eine C-Bibliothek als Abhängigkeit benötigt.
+
+.Administration, Konfiguration
+Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen, z.B. auf den `tcl100`-Maschinen, die Notwendigkeit einer `UDEV`-Regel, z.B. in einer Datei `66-hid-rules` im Verzeichnis `/etc/udev/rules.d`:
+[source,ruby]
+----
+KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="042", MODE:="0666"
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="042", MODE:="0666"
+----
+
+.Mikroprozessor-Seite
+=== Testsystem mit der USB-MIDI
+Auch hier kam der Mikroprozessor Teensy 4.1 in einem erfolgreichen Test zum Einsatz und wieder reichte, wie beim USB-Seriellen Weg, die Standard Arduino Bibliotek `Arduino.h`, diesmal für das Schreiben auf der USB-MIDI-Schnittstelle.
+
+.Java-Applikationsseite
+Die Potiboard-Applikation kann die MIDI-Daten in ihrem Java-Code ohne zusätzliche Abhängigkeiten empfangen MIDI direkt von der `JRE` unterstützt durch die `Java Sound API`.
+
+.Administration, Konfiguration
+Keine Notwendigkeiten unter Linux.
+
+.Bemerkung
+Um größere Datenlängen in einem Datenpaket zu verschicken (> als zwei Byte), müssen sogenannte `Sysex`, oder `MIDI system exclusive messages` benutzt werden.
+Bei dieser Art von Nachrichten sind mehr als drei Byte Datenpaketlänge erlaubt.
+Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierungen vom 8-Bit-System in 7-Bit-System und zurück im Code sowohl auf Mikroprozessor-Seite (`C), als auch auf Java-Applikationsseite notwendig sind.
 
 
 
@@ -151,13 +192,13 @@ Sehr interessant ist auch die `MQTT`-Technologie, die allerdings die Notwendigke
 
 ====
 [%interactive]
-* [*] Komplexität, Lebensdauer und Wartbarkeit Hardware
+* [*] Komplexität, Lebensdauer und Wartbarkeit der *Hardware*
 
 Die Funktion der eingesetzten Drehgeber und Mirkocontroller muss durch Verfügbarkeit am Markt oder durch Reserveteile-Einlagerung für möglichst mehrere Jahrzehnte mit finanziell überschaubarem Aufwand absicherbar sein. Komplexe Systeme oder eine hohe Anzahl von verschiedenen benötigten Hardwarekomponenten sollte wenn möglich vermieden werden. 
 ====
 ====
 [%interactive]
-* [*] Komplexität, Lebensdauer und Wartbarkeit Software
+* [*] Komplexität, Lebensdauer und Wartbarkeit der *Software*
 
 Die eingesetzte Software auf Mikrocontroller und auf Potiboard-Applikationsseite sollte aus möglichst gut gepflegten und verständlichen Open-Source Projekten mit hoher Verbreitung stammen. Dies kann auch Auswirkungen auf die Wahl des Mikrocontrollers haben. Der notwendige selbst geschriebene Soure-Code sollte möglichst einfach wartbar sein. Auf dem Mikrocontroller kommen die Programmiersprachen Assembler, C und Python in Frage, auf der Potiboard-Applikationsseite werden Java-basierte Lösungen preferiert.  
 ====
@@ -169,7 +210,7 @@ Der Aufwand für zusätzliche Hardware und Software, wie z.B. der KonzentratorPC
 ====
 ====
 [%interactive]
-* [*] **Geschwindigkeit** Signalübertragung der Inkremente der Encoder
+* [*] **Geschwindigkeit** der Signalübertragung der Inkremente der Encoder
 
 Die vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte zwischen max. bei 10 ms (100 Hz) liegen, besser deutlich niedriger.
 ====
@@ -192,7 +233,7 @@ Technologie|USB|Netzwerk|Hardware|Software|Administration|Geschwindigkeit|Duplex
 |Webflux    | |X|*  |** |*  |** |***|  9
 |MQTT       | |X|*  |*  |*  |** |***|  8
 |ZeroMQ     | |X|** |** |** |** |***| 11
-|Socket     | |X|** |**  |** |***|** | 11
+|Socket     | |X|** |** |** |***|** | 11
 |USB-Serial |X| |***|***|** |***|** | 13
 |USB-HID    |X| |***|** |** |** |** | 11
 |USB-MIDI   |X| |***|***|***|*  |*  | 11
@@ -217,11 +258,15 @@ Wenn USB als Datenübertragungssystem als möglicherweise nicht ausreichend bewe
 Eine rein _socket-basierte_ Verbindung von einem netzwerk-fähigen Mikrocontroller zur java-basierten Potiboard-Applikation wäre ein begehbarer Weg oder eine auf das _ZeroMQ-Messaging_ basierende Übertragung zwischen Mikrokontroller und der Potiboard-Applikation..
 
 
+image:teensy_on_table.png[Ciao,align="center"]
+
+
+
 == Annex
 
 ** GPS-System zur Uhrensynchronisation für Zeitmessungen mit ~  30 &#181;s Genauigkeit  
 ** 7-Bit Arithmetische Kodierung zur Darstellung von Datentypengrößen größer als 7 Bit (>127) (MIDI-Anforderung)
-** Nutzung Statusregister für GPIO zur Vermeidung von CPU-Interrupts beim Raspberry PI Nano
+** Nutzung der `State Machine` für den GPIO-Verkehr zur Vermeidung von CPU-Interrupts beim Raspberry PI Nano
 
 
 
