@@ -17,7 +17,7 @@ Rev. 1.1, November 9, 2022
 
 <<<
 
-== Einbindung dieser Arbeit in das laufende projekt FCC Digital Potiboard
+== Einbindung dieser Arbeit in das laufende Projekt FCC Digital Potiboard
 
 
 Die hier beschriebene Technologie-Evaluierung dient als Grundlage zur Entscheidungsfindung zu den in der <<figure-1, Abbildung: Status FCC Digital Potiboard >> markierten _Major Milestones_ und __Subprojects / Tasks__.
@@ -28,13 +28,12 @@ image::potiboard-status-20220708.png[Status-Project, align="center"]
 
 == Rückblick und Motivation
 
-Der vor ca. 6 Jahren entwickelte Potiboard-Prototyp wurde in einem der vergangenen Potiboard-Meetings als unzureichend in seiner Technologieauswahl eingestuft.
-Insbesondere der Einsatz einer "closed source library" des benutzten Phidget-Mikrocontroller, der zur Verarbeitung der Encodersignale dient, wurde kritisiert.
-Dessen Treiber läuft zudem nicht im "Userspace" auf dem zu benutzenden Linuxderivat, was aus system-administrativer Sicht ein Nachteil ist.
+Der vor ca. 6 Jahren entwickelte Potiboard-Prototyp wurde in einem vorhergehenden Potiboard-Meeting als unzureichend in seiner Technologieauswahl eingestuft.
+Insbesondere der Einsatz der "closed source library" des damals benutzten Phidget-Mikrocontroller, der zur Verarbeitung der Encodersignale dient, wurde als kritisch eingestuft.
+Die benötigte Bibliothek des Phidget läuft zudem nicht im "Userspace" auf Linux, was aus system-administrativer Sicht ein Nachteil ist.
 
-Eine weitere Anforderung der Zukunft (FCC) **könnte sein**, dass die Drehgeber ihre Inkremente an eine Potiboard-App über eine nicht unerhebliche Entfernung übermittelt werden müssen.
-Diese Anforderung wurde beim <<figure-1, alten Potiboard-Prototyp>> über eine hohe Integration der beteiligten Komponenten gelöst.
-Drehgeber wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in einem Gehäuse mit Netzwerkanschluss.
+Die damaligen Anforderungen wurden beim <<figure-1, alten Potiboard-Prototyp>> über eine hohe Integration der beteiligten Komponenten gelöst.
+Drehgeber, wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in einem Gehäuse mit Netzwerkanschluss, über den der Gerätezugriff direkt über `JAPC` erfolgte.
 
 [[figure-2]]
 image::old-potiboard-prototype.png[Old potiboard prototype,align="center"]
@@ -57,22 +56,24 @@ ____
 
 == Vom alten Potiboard-Prototyp übernommende Technologieentscheidungen und neue Wege
 
-* Optische "Rotary Quadrature Encoder" wurden wieder wegen ihrer Signalqualität, Zuverlässigkeit und Verfügbarkeit eingesetzt. Auf kugelgelagerte Modelle wurde diesmal verzichtet (Haptikgründe wegen zu hoher Leichtgängigkeit).Merkmale sind 16-128 Pulse pro 360-Rotation, keine Zahnung, 5 V. 3.3V Modelle waren auf dem Markt nicht erhältlich.
-** Beispiel-Encoder sind:
+* Optische "Rotary Quadrature Encoder" wurden wieder, wie beim alten Prototypen, wegen ihrer Signalqualität, Zuverlässigkeit und Verfügbarkeit eingesetzt. Auf kugelgelagerte Modelle wurde diesmal verzichtet (Haptikgründe wegen zu hoher Leichtgängigkeit).
+Andere aktuelle Auswahlkriterien sind Modelle mit 32-128 Pulsen pro 360-Rotation, keine Zahnung und auf 5 V ausgelegte Signalverarbeitung. 3.3V Modelle, die alle anderen Kriterien auch erfüllen, waren in den letzten Wochen nicht lieferbar.
+
+** Getestete-Encoder sind:
 *** Grayhill 63R128, Stückpreis: 100 $ 
-*** Bourns ENA1J-B28-L00128L, Stückpreis:60 $ 
+*** Bourns ENA1J-B28-L00128L, Stückpreis:60 $, gleiches Modell wie beim alten Prototypen.
 
-Durch den Einsatz von modernen Mikrocontrollern, deren Spannung an ihren I/O Kanälen häufig auf 3,3 V limitiert ist (anstatt 5V), schränkt sich dich Auswahl der möglichen Endcoder-Modelle deutlich ein. Eventuell müssten die Encoder-Ausgangsspannungen an den Eingängen der Mikrocontroller mit Pegelumsetzern (Level-Shifter) angepasst werden, wenn 5 V Encoder-Modelle eingesetzt werden müssen.
+Durch den Einsatz von modernen Mikrocontrollern, deren Spannung an ihren I/O Kanälen häufig auf 3,3 V limitiert ist (anstatt 5V), schränkt sich dich Auswahl der möglichen Endcoder-Modelle deutlich ein. Eventuell müssten die Encoder-Ausgangsspannungen an den Eingängen der Mikrocontroller mit Pegelumsetzern (Level-Shifter) angepasst werden, wenn aus Gründen von Lieferschwierigkeiten 5 V Encoder-Modelle eingesetzt werden müssen.
 
-* Es wurden wieder Mikrokontroller evaluiert, die die Inkremente der bis zu acht (8!) Encoder, ohne spürbare Zeitverzögerung, weiterverarbeiten können sollen. Statt des im alten Prototypen verwendeten Phidget-Mikrocontroller (1047) wurden folgende Mikrocontroller stattdessen betrachtet:
+* Es wurden neue Mikrokontroller evaluiert, die die Inkremente der bis zu acht (8!) Encoder, ohne spürbare Zeitverzögerung, weiterverarbeiten können sollen. Statt des im alten Prototypen verwendeten Phidget-Mikrocontroller (1047_1), wurden folgende Mikrocontroller stattdessen in die Auswahl genommen:
+
 ** Raspberry Pi 4, Stückpreis: 70 $
 ** STM32H7, STM32F7, Stückpreis: 70 $
 ** Teensy 4.1 (Arduino kompatibel), Stückpreis: 40 $
 ** Raspberry Pi Pico, Stückpreis: 8 $
 
-
-Alle Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Software betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 6-80 US $.
-Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C, Python oder Assembler geschrieben und gewartet werden. Das gleiche gilt für die verschiedenen Übertragungtechnologien zur Java-basierten Potiboard-Applikation. 
+Alle diese Mikrokontroller sind verbreitete Modellarten (Ersatzteilversorgung scheint vorerst gesichert) und lassen sich mit Open-Source Software betreiben.
+Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss in C, Python oder Assembler geschrieben und gewartet werden. Das gleiche gilt für die verschiedenen Übertragungstechnologien zur der Java-basierten Potiboard-Applikation, wenn keine zusätztliche Rechnerschicht eingeführt wird.
 
 == Generelle Hardware-Komponenten-Architekturüberlegungen
 
@@ -95,11 +96,12 @@ image::general-topology.svg[Generelle Komponenten, align="center"]
 CAUTION: USB ist auf eine *maximale Kabellänge* von 5m spezifiziert. Mit guten Kabel und/oder Repeatern sind vielleicht bis zu 10m möglich.
 
 .USB Vorteil
-NOTE: USB ist prinzipiell schneller, die Protokolle haben keinen Adressierungs-Overhead.
+NOTE: USB ist schneller als die Netzwerkübertragung, insbesondere bei der Übertragung von kleinen Datenpaketen.
+Die USB-Protokolle haben keinen Adressierungs-Overhead.
 Vieles ist dadurch einfacher, z.B. müssen Sender (Potiboard) und Empfängeradresse (Potiboard-App) nicht konfigurierbar programmiert werden.
 
 .USB Vorteil
-NOTE: USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. Beim Netzwerk müßte zusätzliche Hardware (z.B. PoE) hinzugefügt werden, wenn ein Stromnetz-Anschluss vermieden werden soll (USB als nur zum Stromanschluss ginge natürlich auch). 
+NOTE: USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. Beim Netzwerk müßte zusätzliche Hardware (z.B. PoE) hinzugefügt werden, wenn ein Stromnetz-Anschluss vermieden werden soll (USB nur zum Stromanschluss ginge natürlich auch).
 
 == Netzwerkbasierte System-Architekturen und Technologien
 
@@ -121,9 +123,9 @@ Die im Referenzsystem eingesetzte Datenübermittlungstechnologie basiert auf der
 
 Ein Nachteil und in mancherlei Hinsicht sicher auch Vorteil dieser Architektur ist die Einführung eines java-basierten `Webflux`-Servers (siehe Bild `EncoderPositionsServerPC`), der ein PC-System mit Controls-konformen OS sein sollte. Es ist also eine Schicht (_Tier_) notwendig, um die Inkremente der verschiedenen Encoder im `WebFlux`-Format zu versenden.
 
-Auf der Habenseite dieser Architektur steht die Anpassbarkeit und Wartbarkeit nach den Richtlinien der Controls-Abteilung und damit eine sichere, kontrollierbare Netzwerkkommunikation im ACC-Netzwerk auf lange Sicht und keine Insellösung im ACC-Netz.
+Auf der Habenseite dieser Architektur steht die Anpassbarkeit und Wartbarkeit nach den Richtlinien der Controls-Abteilung und damit eine sichere, kontrollierbare Netzwerkkommunikation im ACC-Netzwerk und keine Insellösung im ACC-Netz.
 
-Eine vereinfachte Architektur könnte den Einsatz eines weiteren Rechners, wie der des Konzentrator-PCs, eingesetzt für als `Webflux`-Server, überflüssig machen. Die Instandhaltung des Rechners so wie die Wartung des Betriebssytems (z.B. Rocky Linux) erzeugt wiederkehrende Kosten. Deshalb wurden weitere netzwerk-basierte Technologien in Betracht gezogen.
+Die weiteren im Anschluss besprochenen netzwerkbasierenden Architekturen könnten den Einsatz eines weiteren Rechners, wie der des Konzentrator-PCs überflüssig machen. Die Instandhaltung des Rechners, so wie die Wartung des Betriebssytems (z.B. Rocky Linux), erzeugt wiederkehrende Kosten.
 
 === Testsysteme mit `ZeroMQ` und `MQTT`
 
@@ -131,7 +133,7 @@ Eine vereinfachte Architektur könnte den Einsatz eines weiteren Rechners, wie d
 .Test-Implementation 2
 image:potiboard_network_02.svg[Simpler Network and System Architecture, align="center"]
 
-Ein Kanditat für eine einfachere Architektur ist zum Beispiel die Technologie `ZeroMQ`, die sich mit einem Raspberry Pi 4, wie getestet, leicht einsetzen läßt.
+Ein Kanditat für eine einfachere Architektur ist zum Beispiel die Technologie `ZeroMQ`, die sich mit einem Raspberry Pi 4, wie getestet, leicht umsetzen läßt.
 
 Sehr interessant ist auch die `MQTT`-Technologie, die allerdings die Notwendigkeit des Aufsetzens eines `MQTT`-Servers nach sich ziehen würde und somit den Vorteil der Kostenersparnis zumindestens teilweise wieder verliert.
 
@@ -146,7 +148,7 @@ Die USB-Serial Übertragung wurde hauptsächlich vom Mikroprozessor Teensy 4.1 a
 Es wurde die gut gepflegte und verbreitete Java-Bibliothek https://fazecast.github.io/jSerialComm/[jSerialComm] genutzt um die seriellen Datenpakete in der Potiboard-Applikation zu empfangen.
 
 .Administration, Konfiguration
-Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen, z.B. auf den `tcl100`-Maschinen, die Notwendigkeit einer Rechtevergabe für den `user`, um unter Linux Zugriffrechte auf die Serielle Schnittstelle zu bekommen.
+Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen, z.B. auf den `tcl1000`-Maschinen, durch die Notwendigkeit einer Rechtevergabe für den `user`, um unter Linux Zugriffrechte auf die Serielle Schnittstelle zu bekommen.
 
 [source,ruby]
 ----
@@ -156,15 +158,17 @@ sudo usermod -a -G lock username
 sudo usermod -a -G tty username
 ----
 
+Zusätzlich wird die Installation einer C-Bibliothek auf dem Host-Rechner (z.B. auf den tcl1000-Maschinen) auf der Java-Applikationsseite benötigt.
+
 === Testsystem mit USB-HID
 .Mikroprozessor-Seite
-Wieder kam der Teensy 4.1 zum Einsatz, diesmal mit einer Teensy-speziellen Bibliothek https://github.com/PaulStoffregen/USBHost_t36/[USB Host Library for Teensy 3.6 and 4.0]. Mit dieser können USB-HID konform "Rohdaten" bis zu einer Länge von 64 Byte (und pro Millisekunde) in einem Datenpaket übertragen und empfangen werden.
+Wieder kam der Teensy 4.1 zum Einsatz, diesmal mit einer Teensy-speziellen Bibliothek https://github.com/PaulStoffregen/USBHost_t36/[USB Host Library for Teensy 3.6 and 4.0]. Mit dieser können USB-HID konform "Rohdaten" bis zu einer Länge von 64 Byte (pro Millisekunde) in einem Datenpaket übertragen und empfangen werden.
 
 .Java-Applikationsseite
-Auf Java-Seite setzte sich eine sehr leichgewichtige Bibliothek durch, die https://github.com/nyholku/purejavahidapi[Pure Java HIDApi]. Sie bekam den Vorzug zur https://github.com/gary-rowe/hid4java[HID4Java], die eine C-Bibliothek als Abhängigkeit benötigt.
+Auf Java-Seite setzte sich eine sehr leichgewichtige Bibliothek durch, die https://github.com/nyholku/purejavahidapi[Pure Java HIDApi]. Sie bekam den Vorzug zur https://github.com/gary-rowe/hid4java[HID4Java], die zusätzlich eine C-Bibliothek (z.B. auf den tcl1000-Maschinen) als Abhängigkeit benötigt.
 
 .Administration, Konfiguration
-Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen, z.B. auf den `tcl100`-Maschinen, die Notwendigkeit einer `UDEV`-Regel, z.B. in einer Datei `66-hid-rules` im Verzeichnis `/etc/udev/rules.d`:
+Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen (z.B. auf den `tcl1000`-Maschinen), die Notwendigkeit einer `UDEV`-Regel, z.B. in einer Datei `66-hid-rules` im Verzeichnis `/etc/udev/rules.d`:
 [source,ruby]
 ----
 KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="042", MODE:="0666"
@@ -176,15 +180,15 @@ SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="042", MODE:="0666
 Auch hier kam der Mikroprozessor Teensy 4.1 in einem erfolgreichen Test zum Einsatz und wieder reichte, wie beim USB-Seriellen Weg, die Standard Arduino Bibliotek `Arduino.h`, diesmal für das Schreiben auf der USB-MIDI-Schnittstelle.
 
 .Java-Applikationsseite
-Die Potiboard-Applikation kann die MIDI-Daten in ihrem Java-Code ohne zusätzliche Abhängigkeiten empfangen MIDI direkt von der `JRE` unterstützt durch die `Java Sound API`.
+Die Potiboard-Applikation kann die MIDI-Daten in ihrem Java-Code ohne zusätzliche Abhängigkeiten empfangen, MIDI wird direkt von der `JRE` unterstütztm ist enthalten in der `Java Sound API`.
 
 .Administration, Konfiguration
 Keine Notwendigkeiten unter Linux.
 
 .Bemerkung
-Um größere Datenlängen in einem Datenpaket zu verschicken (> als zwei Byte), müssen sogenannte `Sysex`, oder `MIDI system exclusive messages` benutzt werden.
-Bei dieser Art von Nachrichten sind mehr als drei Byte Datenpaketlänge erlaubt.
-Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierungen vom 8-Bit-System in 7-Bit-System und zurück im Code sowohl auf Mikroprozessor-Seite (`C), als auch auf Java-Applikationsseite notwendig sind.
+Um mit MIDI Datentypen größer als zwei Byte in einem Datenpaket zu verschicken, müssen sogenannte `Sysex`, oder `MIDI system exclusive messages` benutzt werden.
+Sie dienen normalerweise zur Konfiguration zwischen den MIDI-Geräten. Bei dieser Art von Nachrichten sind mehr als drei Byte Datenpaketlänge erlaubt.
+Allerdings können in jedem übertragenen Byte nur 7 Bit genutzt werden (1 Bit ist ein Status-Bit), so dass Konvertierungen vom 8-Bit-System in 7-Bit-System und zurück sowohl auf Mikroprozessor-Seite (`C`), als auch auf Java-Applikationsseite notwendig sind.
 
 
 
@@ -204,15 +208,15 @@ Die eingesetzte Software auf Mikrocontroller und auf Potiboard-Applikationsseite
 ====
 ====
 [%interactive]
-* [*] **Administration**s-, Konfigurationsaufwand
+* [*] **Admin**istrations-, Konfigurationsaufwand
 
-Der Aufwand für zusätzliche Hardware und Software, wie z.B. der KonzentratorPC für `Webflux` oder ein `MQTT-Server`(Linux-Administration, Hardwarepflege) oder zusätzliche Stromversorgungswege als auch der Aufwand für Konfigurationen (Netzwerk-Adressen-Pflege) sollte minimal gehalten werden. Unter diesen Punkt fallen auch notwendige Linux-Anpassungen z.B. auf den tcl100 Rechnern für den HKR.
+Der Aufwand für zusätzliche Hardware und Software, wie z.B. der KonzentratorPC für `Webflux` oder ein `MQTT-Server`(Linux-Administration, Hardwarepflege) oder zusätzliche Stromversorgungswege als auch der Aufwand für Konfigurationen (Netzwerk-Adressen-Pflege) sollte minimal gehalten werden. Unter diesen Punkt fallen auch notwendige Linux-Anpassungen z.B. auf den tcl1000 Rechnern für den HKR.
 ====
 ====
 [%interactive]
 * [*] **Geschwindigkeit** der Signalübertragung der Inkremente der Encoder
 
-Die vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte zwischen max. bei 10 ms (100 Hz) liegen, besser deutlich niedriger.
+Die Geschwindigkeit der Imkremente vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte zwischen max. bei 10 ms (100 Hz) liegen, besser deutlich niedriger.
 ====
 ====
 [%interactive]
@@ -229,12 +233,12 @@ Um die Benutzererfahrung am Potiboard-Encoder-Device zu verbessern, sollte es te
 |====================
 |Eigenschaft
 --
-Technologie|USB|Netzwerk|Hardware|Software|Administration|Geschwindigkeit|Duplex| &sum; *
+Technologie|USB|Netzwerk|Hardware|Software|Admin|Geschwindigkeit|Duplex| &sum; *
 |Webflux    | |X|*  |** |*  |** |***|  9
 |MQTT       | |X|*  |*  |*  |** |***|  8
 |ZeroMQ     | |X|** |** |** |** |***| 11
 |Socket     | |X|** |** |** |***|** | 11
-|USB-Serial |X| |***|***|** |***|** | 13
+|USB-Serial |X| |***|***|*  |***|** | 12
 |USB-HID    |X| |***|** |** |** |** | 11
 |USB-MIDI   |X| |***|***|***|*  |*  | 11
 |RS232/RS485| | |   |   |-  |   |   |
@@ -242,7 +246,7 @@ Technologie|USB|Netzwerk|Hardware|Software|Administration|Geschwindigkeit|Duplex
 | 8+|X = gehört zu, - = ungenügend, * = ausreichend , ** = gut, *** = sehr gut    |
 |====================
 
-Die Tabelle dient nur als Diskussionsgrundlage für die verschiedenen Technologien. Für einen Vergleich wären die verschiedenen Eigenschaften (Spalten) zu gewichten. Die &sum; * Spalte dient nicht der objektiven Bewertung;
+Die Tabelle dient nur als Diskussionsgrundlage für die verschiedenen Technologien. Für einen Vergleich wären die verschiedenen Eigenschaften (Spalten) zu gewichten. Die &sum; * Spalte dient *nicht* zur objektiven Bewertung.
 
 == Fazit
 
@@ -250,23 +254,23 @@ Wenn USB als Datenübertragungssystem für Potiboard-Prototypentwickungen vorers
 
 IMPORTANT: Der Teensy 4.1 ist ein kosteneffizienter, gut verfügbarer und hoch performanter 600 MHz ARM Cortex M7 Mikrocontroller. Seine über die Arduino-IDE leicht einbindbaren Open-Source Bibliotheken sind verbreitet und gut unterstützt Die in den Tests eingesetzten Bibiotheken für Encoder sowie die USB-Serial-, USB-HID- und USB-Midi Bibliotheken funktionierten schnell und problemlos.
 
-IMPORTANT: Das USB-Midi Protokoll bietet als einzige USB-Datenübertragungstechnologie echtes Plug-and-Play an einem Linux-basierten Host (wie z.B. TCL100).
-Auf der Java-Seite, also bei der Entwicklung und Wartung der Potiboard-Applikation, wird MIDI direkt von der `JRE` unterstützt durch die `Java Sound API`. D.h. es werden wahrscheinlich nie zusätzliche Bibliotheken oder Abhängigkeiten einzubinden sein.
+IMPORTANT: Das USB-Midi Protokoll bietet als einzige USB-Datenübertragungstechnologie echtes Plug-and-Play an einem Linux-basierten Host (wie z.B. tcl1000).
+Auf der Java-Seite, also bei der Entwicklung und Wartung der Potiboard-Applikation, wird MIDI direkt von der `JRE` unterstützt durch die `Java Sound API`. Es werden auf absehbare Zeit keine zusätzlichen Bibliotheken oder Abhängigkeiten einzubinden sein.
 Diesen Vorteilen stehen gegenüber eine leicht erhöhte Komplexität bei der Programmierung der Übertragungsdatenpakete und eine niedrigere aber noch ausreichende Datenübertragungsrate.
 
 Wenn USB als Datenübertragungssystem als möglicherweise nicht ausreichend bewertet wird, müsste die Evaluierung der netzwerk-basierten Technologien weitergeführt werden.
-Eine rein _socket-basierte_ Verbindung von einem netzwerk-fähigen Mikrocontroller zur java-basierten Potiboard-Applikation wäre ein begehbarer Weg oder eine auf das _ZeroMQ-Messaging_ basierende Übertragung zwischen Mikrokontroller und der Potiboard-Applikation..
+Eine rein _socket-basierte_ Verbindung von einem netzwerk-fähigen Mikrocontroller zur java-basierten Potiboard-Applikation wäre ein begehbarer Weg. Möglich wäre sicher auch die auf das _ZeroMQ-Messaging_ basierende Übertragung zwischen Mikrokontroller und der Potiboard-Applikation..
 
 
 image:teensy_on_table.png[Ciao,align="center"]
 
 
 
-== Annex
+== Weitere bearbeitete aber nicht ausgeführte Themen (stichpunktartig)
 
-** GPS-System zur Uhrensynchronisation für Zeitmessungen mit ~  30 &#181;s Genauigkeit  
-** 7-Bit Arithmetische Kodierung zur Darstellung von Datentypengrößen größer als 7 Bit (>127) (MIDI-Anforderung)
-** Nutzung der `State Machine` für den GPIO-Verkehr zur Vermeidung von CPU-Interrupts beim Raspberry PI Nano
+** GPS-System zur Uhrensynchronisation für Zeitmessungen mit ~  30 &#181;s Genauigkeit.
+** 7-Bit pro Byte arithmetische Kodierung zur Darstellung von Datentypengrößen größer als 7 Bit (>127) (MIDI-speziell).
+** Nutzung der `State Machine` für die GPIO-Kommunikation zur Vermeidung von CPU-Interrupts beim Raspberry PI Nano.
 
 
 

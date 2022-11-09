@@ -8,10 +8,10 @@ title USB based encoder counter transmission
 '   ARM-based MC Teensy 4.1 (Arduino) or STM32
 ' endlegend
 
-node tcl100 #lightgreen;line:black;text:black
+node tcl1000 #lightgreen;line:black;text:black
 node microprocessor #lightblue;line:black;text:black
 node encoder #lightblue;line:black;text:black
 microprocessor *-- encoder : GPIO
-tcl100 -- microprocessor : USB-Serial, USB-HID, USB-Midi
+tcl1000 -- microprocessor : USB-Serial, USB-HID, USB-Midi
 ' tcl100 -- microprocessor : Network, e.g. Socket or ZeroMQ
 @enduml

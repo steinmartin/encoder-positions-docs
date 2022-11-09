@@ -12,29 +12,29 @@ nwdiag {
   network GPIO {
     group {
       color = "lightblue";
-       Encoder_1;
-       Encoder_2;
-       Encoder_n;
-      MicroController;
-      EncoderPositionsServerPC;
+       encoder_1;
+       encoder_2;
+       encoder_n;
+      microprocessor;
+      concentratorPC;
     }
     color = "gray"
     Encoder_1 [shape = control];
     Encoder_2 [shape = control];
     Encoder_n [shape = control];
-    MicroController [shape = component];
-    MicroController -- EncoderPositionsServerPC;
-    EncoderPositionsServerPC [shape = node, address = USB-Serial];
+    microprocessor [shape = component];
+    microprocessor -- concentratorPC;
+   concentratorPC [shape = node, address = USB-Serial];
   }
 
   network Network {
-    ACC_Net [shape = cloud];
-    EncoderPositionsServerPC [shape = node, address = WebFlux];
-    PotiboardApp [shape = node, address = WebFlux];
     group {
       color = "lightgreen";
-      PotiboardApp;
+      potiboardApp;
     }
+    acc_net [shape = cloud];
+    concentratorPC [shape = node, address = WebFlux];
+    potiboardApp [shape = node, address = WebFlux];
   }
 }
 @enduml
