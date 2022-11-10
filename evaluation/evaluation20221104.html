@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="description" content="Sample document with custom header and footer parts.">
+<meta name="description" content="Ergebnisse der Technologie-Evaluierung von Drehgebern und deren Anbindung un Kurzform">
 <meta name="keywords" content="Asciidoctor, header, footer, docinfo">
 <meta name="author" content="Achim Bloch-Späth &lt;a.bloch-spaeth@gsi.de&gt;, Martin Stein &lt;m.stein@gsi.de&gt;">
 <title>Technologie-Evaluierung von Drehgebern und deren Anbindung an eine Java-basierte Potiboard-App</title>
@@ -21,24 +21,25 @@
                 <img src="common/meta/img/FAIR_Logo_rgb.png" alt="FAIR"  width="80" height="60">
             </td>
             <td style="text-align: left;max-width:80%;font-size: 48px;">
-                    ACO - Application Support (APS)
+                    OPE - Application Support (APS)
             </td>
         </tr>
     </table>
 </div>
 </head>
-<body class="article">
+<body class="book">
 <div id="header">
 <h1>Technologie-Evaluierung von Drehgebern und deren Anbindung an eine Java-basierte Potiboard-App</h1>
 <div class="details">
 <span id="author" class="author">Achim Bloch-Späth &lt;a.bloch-spaeth@gsi.de&gt;, Martin Stein &lt;m.stein@gsi.de&gt;</span><br>
-<span id="revnumber">version 1.1,</span>
-<span id="revdate">November 9, 2022</span>
+<span id="email" class="email"><a href="mailto:a.bloch-spaeth@gsi.de">a.bloch-spaeth@gsi.de</a>, <a href="mailto:m.stein@gsi.de">m.stein@gsi.de</a></span><br>
+<span id="revnumber">version v1.1,</span>
+<span id="revdate">08.11.2022</span>
 </div>
 <div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
+<div id="toctitle">Inhaltsverzeichnis</div>
 <ul class="sectlevel1">
-<li><a href="#_einbindung_dieser_arbeit_in_das_laufende_projekt_fcc_digital_potiboard">Einbindung dieser Arbeit in das laufende projekt FCC Digital Potiboard</a></li>
+<li><a href="#_einbindung_dieser_arbeit_in_das_laufende_projekt_fcc_digital_potiboard">Einbindung dieser Arbeit in das laufende Projekt FCC Digital Potiboard</a></li>
 <li><a href="#_rückblick_und_motivation">Rückblick und Motivation</a></li>
 <li><a href="#_skizze_des_neuen_potiboard_encoder_device">Skizze des neuen Potiboard-Encoder-Device</a></li>
 <li><a href="#_vom_alten_potiboard_prototyp_übernommende_technologieentscheidungen_und_neue_wege">Vom alten Potiboard-Prototyp übernommende Technologieentscheidungen und neue Wege</a></li>
@@ -64,18 +65,13 @@
 <li><a href="#_grundlegende_zentrale_anforderungen_stichwortliste">Grundlegende zentrale Anforderungen (Stichwortliste)</a></li>
 <li><a href="#_tabelle_technologiebewertung">Tabelle Technologiebewertung</a></li>
 <li><a href="#_fazit">Fazit</a></li>
-<li><a href="#_annex">Annex</a></li>
+<li><a href="#_themen_die_zur_evaluierung_beigetragen_haben_aber_nicht_tiefer_diskutiert_werden_stichpunktartig">Themen, die zur Evaluierung beigetragen haben, aber nicht tiefer diskutiert  werden (stichpunktartig)</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div style="page-break-after: always;"></div>
-</div>
-</div>
 <div class="sect1">
-<h2 id="_einbindung_dieser_arbeit_in_das_laufende_projekt_fcc_digital_potiboard">Einbindung dieser Arbeit in das laufende projekt FCC Digital Potiboard</h2>
+<h2 id="_einbindung_dieser_arbeit_in_das_laufende_projekt_fcc_digital_potiboard">Einbindung dieser Arbeit in das laufende Projekt FCC Digital Potiboard</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Die hier beschriebene Technologie-Evaluierung dient als Grundlage zur Entscheidungsfindung zu den in der <a href="#figure-1">Abbildung: Status FCC Digital Potiboard </a> markierten <em>Major Milestones</em> und <em>Subprojects / Tasks</em>.</p>
@@ -92,14 +88,13 @@
 <h2 id="_rückblick_und_motivation">Rückblick und Motivation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Der vor ca. 6 Jahren entwickelte Potiboard-Prototyp wurde in einem der vergangenen Potiboard-Meetings als unzureichend in seiner Technologieauswahl eingestuft.
-Insbesondere der Einsatz einer "closed source library" des benutzten Phidget-Mikrocontroller, der zur Verarbeitung der Encodersignale dient, wurde kritisiert.
-Dessen Treiber läuft zudem nicht im "Userspace" auf dem zu benutzenden Linuxderivat, was aus system-administrativer Sicht ein Nachteil ist.</p>
+<p>Der vor ca. 6 Jahren entwickelte Potiboard-Prototyp wurde in einem vorhergehenden Potiboard-Meeting als unzureichend in seiner Technologieauswahl eingestuft.
+Insbesondere der Einsatz der "closed source library" des damals benutzten Phidget-Mikrocontroller, der zur Verarbeitung der Encodersignale dient, wurde als kritisch eingestuft.
+Die benötigte Bibliothek des Phidget läuft zudem nicht im "Userspace" auf Linux, was aus system-administrativer Sicht ein Nachteil ist.</p>
 </div>
 <div class="paragraph">
-<p>Eine weitere Anforderung der Zukunft (FCC) <strong>könnte sein</strong>, dass die Drehgeber ihre Inkremente an eine Potiboard-App über eine nicht unerhebliche Entfernung übermittelt werden müssen.
-Diese Anforderung wurde beim <a href="#figure-1">alten Potiboard-Prototyp</a> über eine hohe Integration der beteiligten Komponenten gelöst.
-Drehgeber wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in einem Gehäuse mit Netzwerkanschluss.</p>
+<p>Die damaligen Anforderungen wurden beim <a href="#figure-1">alten Potiboard-Prototyp</a> über eine hohe Integration der beteiligten Komponenten gelöst.
+Drehgeber, wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in einem Gehäuse mit Netzwerkanschluss, über den der Gerätezugriff direkt über <code>JAPC</code> erfolgte.</p>
 </div>
 <div id="figure-2" class="imageblock text-center">
 <div class="content">
@@ -113,7 +108,7 @@ Drehgeber wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in
 <div class="sectionbody">
 <div id="figure-22" class="imageblock text-center">
 <div class="content">
-<img src="common/img/potiboard-skizze.png" alt="Old potiboard prototype">
+<img src="common/img/potiboard-skizze.png" alt="New potiboard sketch">
 </div>
 </div>
 <div class="quoteblock">
@@ -158,18 +153,19 @@ Drehgeber wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in
 <div class="ulist">
 <ul>
 <li>
-<p>Optische "Rotary Quadrature Encoder" wurden wieder wegen ihrer Signalqualität, Zuverlässigkeit und Verfügbarkeit eingesetzt. Auf kugelgelagerte Modelle wurde diesmal verzichtet (Haptikgründe wegen zu hoher Leichtgängigkeit).Merkmale sind 16-128 Pulse pro 360-Rotation, keine Zahnung, 5 V. 3.3V Modelle waren auf dem Markt nicht erhältlich.</p>
+<p>Optische "Rotary Quadrature Encoder" wurden wieder, wie beim alten Prototypen, wegen ihrer Signalqualität, Zuverlässigkeit und Verfügbarkeit eingesetzt. Auf kugelgelagerte Modelle wurde diesmal verzichtet (Haptikgründe wegen zu hoher Leichtgängigkeit).
+Andere aktuelle Auswahlkriterien sind Modelle mit 32-128 Pulsen pro 360-Rotation, keine Zahnung und auf 5 V ausgelegte Signalverarbeitung. 3.3V Modelle, die alle anderen Kriterien auch erfüllen, waren in den letzten Wochen nicht lieferbar.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Beispiel-Encoder sind:</p>
+<p>Getestete-Encoder sind:</p>
 <div class="ulist">
 <ul>
 <li>
 <p>Grayhill 63R128, Stückpreis: 100 $</p>
 </li>
 <li>
-<p>Bourns ENA1J-B28-L00128L, Stückpreis:60 $</p>
+<p>Bourns ENA1J-B28-L00128L, Stückpreis:60 $, gleiches Modell wie beim alten Prototypen.</p>
 </li>
 </ul>
 </div>
@@ -180,12 +176,12 @@ Drehgeber wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in
 </ul>
 </div>
 <div class="paragraph">
-<p>Durch den Einsatz von modernen Mikrocontrollern, deren Spannung an ihren I/O Kanälen häufig auf 3,3 V limitiert ist (anstatt 5V), schränkt sich dich Auswahl der möglichen Endcoder-Modelle deutlich ein. Eventuell müssten die Encoder-Ausgangsspannungen an den Eingängen der Mikrocontroller mit Pegelumsetzern (Level-Shifter) angepasst werden, wenn 5 V Encoder-Modelle eingesetzt werden müssen.</p>
+<p>Durch den Einsatz von modernen Mikrocontrollern, deren Spannung an ihren I/O Kanälen häufig auf 3,3 V limitiert ist (anstatt 5V), schränkt sich dich Auswahl der möglichen Endcoder-Modelle deutlich ein. Eventuell müssten die Encoder-Ausgangsspannungen an den Eingängen der Mikrocontroller mit Pegelumsetzern (Level-Shifter) angepasst werden, wenn aus Gründen von Lieferschwierigkeiten 5 V Encoder-Modelle eingesetzt werden müssen.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Es wurden wieder Mikrokontroller evaluiert, die die Inkremente der bis zu acht (8!) Encoder, ohne spürbare Zeitverzögerung, weiterverarbeiten können sollen. Statt des im alten Prototypen verwendeten Phidget-Mikrocontroller (1047) wurden folgende Mikrocontroller stattdessen betrachtet:</p>
+<p>Es wurden neue Mikrokontroller evaluiert, die die Inkremente der bis zu acht (8!) Encoder, ohne spürbare Zeitverzögerung, weiterverarbeiten können sollen. Statt des im alten Prototypen verwendeten Phidget-Mikrocontroller (1047_1), wurden folgende Mikrocontroller stattdessen in die Auswahl genommen:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -206,8 +202,8 @@ Drehgeber wie Potiboard-App, gesteuert über einen Touchscreen, befanden sich in
 </ul>
 </div>
 <div class="paragraph">
-<p>Alle Systeme stellen nachbaubare Hardware dar (Ersatzteilversorgung scheint gesichert) und lassen sich mit Open-Source Software betreiben. Pro Einheit bewegen sie sich in einem Kostenrahmen von 6-80 US $.
-Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw. musste in C, Python oder Assembler geschrieben und gewartet werden. Das gleiche gilt für die verschiedenen Übertragungtechnologien zur Java-basierten Potiboard-Applikation.</p>
+<p>Alle diese Mikrokontroller sind verbreitete Modellarten (Ersatzteilversorgung scheint vorerst gesichert) und lassen sich mit Open-Source Software betreiben.
+Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss in C, Python oder Assembler geschrieben und gewartet werden. Das gleiche gilt für die verschiedenen Übertragungstechnologien zur der Java-basierten Potiboard-Applikation, wenn keine zusätztliche Rechnerschicht eingeführt wird.</p>
 </div>
 </div>
 </div>
@@ -244,6 +240,7 @@ Der Mikrocontroller-Code zur Weiterverarbeitung der Encoder-Inkremente muss bzw.
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 <div class="admonitionblock caution">
 <table>
 <tr>
@@ -265,7 +262,8 @@ USB ist auf eine <strong>maximale Kabellänge</strong> von 5m spezifiziert. Mit 
 </td>
 <td class="content">
 <div class="title">USB Vorteil</div>
-USB ist prinzipiell schneller, die Protokolle haben keinen Adressierungs-Overhead.
+USB ist schneller als die Netzwerkübertragung, insbesondere bei der Übertragung von kleinen Datenpaketen.
+Die USB-Protokolle haben keinen Adressierungs-Overhead.
 Vieles ist dadurch einfacher, z.B. müssen Sender (Potiboard) und Empfängeradresse (Potiboard-App) nicht konfigurierbar programmiert werden.
 </td>
 </tr>
@@ -279,7 +277,7 @@ Vieles ist dadurch einfacher, z.B. müssen Sender (Potiboard) und Empfängeradre
 </td>
 <td class="content">
 <div class="title">USB Vorteil</div>
-USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. Beim Netzwerk müßte zusätzliche Hardware (z.B. PoE) hinzugefügt werden, wenn ein Stromnetz-Anschluss vermieden werden soll (USB als nur zum Stromanschluss ginge natürlich auch).
+USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. Beim Netzwerk müßte zusätzliche Hardware (z.B. PoE) hinzugefügt werden, wenn ein Stromnetz-Anschluss vermieden werden soll (USB nur zum Stromanschluss ginge natürlich auch).
 </td>
 </tr>
 </table>
@@ -294,7 +292,7 @@ USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. 
 <h3 id="_testsystem_mit_spring_webflux">Testsystem mit <code>Spring Webflux</code></h3>
 <div id="figure-4" class="imageblock text-center">
 <div class="content">
-<img src="common/img/komponenten-uml-01.svg" alt="New Reference Implementation">
+<img src="common/img/komponenten-uml-01.svg" alt="New Reference Implementation" width="300" height="600">
 </div>
 <div class="title">Figure 2. UML-Komponenten Diagram Netzwerkübertragung with <code>Spring Webflux</code></div>
 </div>
@@ -318,10 +316,10 @@ USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. 
 <p>Ein Nachteil und in mancherlei Hinsicht sicher auch Vorteil dieser Architektur ist die Einführung eines java-basierten <code>Webflux</code>-Servers (siehe Bild <code>EncoderPositionsServerPC</code>), der ein PC-System mit Controls-konformen OS sein sollte. Es ist also eine Schicht (<em>Tier</em>) notwendig, um die Inkremente der verschiedenen Encoder im <code>WebFlux</code>-Format zu versenden.</p>
 </div>
 <div class="paragraph">
-<p>Auf der Habenseite dieser Architektur steht die Anpassbarkeit und Wartbarkeit nach den Richtlinien der Controls-Abteilung und damit eine sichere, kontrollierbare Netzwerkkommunikation im ACC-Netzwerk auf lange Sicht und keine Insellösung im ACC-Netz.</p>
+<p>Auf der Habenseite dieser Architektur steht die Anpassbarkeit und Wartbarkeit nach den Richtlinien der Controls-Abteilung und damit eine sichere, kontrollierbare Netzwerkkommunikation im ACC-Netzwerk und keine Insellösung im ACC-Netz.</p>
 </div>
 <div class="paragraph">
-<p>Eine vereinfachte Architektur könnte den Einsatz eines weiteren Rechners, wie der des Konzentrator-PCs, eingesetzt für als <code>Webflux</code>-Server, überflüssig machen. Die Instandhaltung des Rechners so wie die Wartung des Betriebssytems (z.B. Rocky Linux) erzeugt wiederkehrende Kosten. Deshalb wurden weitere netzwerk-basierte Technologien in Betracht gezogen.</p>
+<p>Die weiteren im Anschluss besprochenen netzwerkbasierenden Architekturen könnten den Einsatz eines weiteren Rechners, wie der des Konzentrator-PCs überflüssig machen. Die Instandhaltung des Rechners, so wie die Wartung des Betriebssytems (z.B. Rocky Linux), erzeugt wiederkehrende Kosten.</p>
 </div>
 </div>
 <div class="sect2">
@@ -331,7 +329,7 @@ USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. 
 <p><span class="image"><img src="common/img/potiboard_network_02.svg" alt="Simpler Network and System Architecture"></span></p>
 </div>
 <div class="paragraph">
-<p>Ein Kanditat für eine einfachere Architektur ist zum Beispiel die Technologie <code>ZeroMQ</code>, die sich mit einem Raspberry Pi 4, wie getestet, leicht einsetzen läßt.</p>
+<p>Ein Kanditat für eine einfachere Architektur ist zum Beispiel die Technologie <code>ZeroMQ</code>, die sich mit einem Raspberry Pi 4, wie getestet, leicht umsetzen läßt.</p>
 </div>
 <div class="paragraph">
 <p>Sehr interessant ist auch die <code>MQTT</code>-Technologie, die allerdings die Notwendigkeit des Aufsetzens eines <code>MQTT</code>-Servers nach sich ziehen würde und somit den Vorteil der Kostenersparnis zumindestens teilweise wieder verliert.</p>
@@ -354,7 +352,7 @@ USB liefert out of the box ausreichend Strom für Drehgeber und Mikroprozessor. 
 </div>
 <div class="paragraph">
 <div class="title">Administration, Konfiguration</div>
-<p>Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen, z.B. auf den <code>tcl100</code>-Maschinen, die Notwendigkeit einer Rechtevergabe für den <code>user</code>, um unter Linux Zugriffrechte auf die Serielle Schnittstelle zu bekommen.</p>
+<p>Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen, z.B. auf den <code>tcl1000</code>-Maschinen, durch die Notwendigkeit einer Gruppenrechtevergabe für den <code>user</code>, um unter Linux Zugriffrechte auf die Serielle Schnittstelle zu bekommen.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -364,20 +362,23 @@ sudo usermod -a -<span style="color:#036;font-weight:bold">G</span> lock usernam
 sudo usermod -a -<span style="color:#036;font-weight:bold">G</span> tty username</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Zusätzlich wird auf dem Host-Rechner (z.B. auf den tcl1000-Maschinen) auf der Java-Applikationsseite eine C-Bibliothek benötigt, die die bei der Java-Bibliothek <a href="https://fazecast.github.io/jSerialComm/" class="bare">https://fazecast.github.io/jSerialComm/</a>[jSerialComm mitgeliefert wird.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_testsystem_mit_usb_hid">Testsystem mit USB-HID</h3>
 <div class="paragraph">
 <div class="title">Mikroprozessor-Seite</div>
-<p>Wieder kam der Teensy 4.1 zum Einsatz, diesmal mit einer Teensy-speziellen Bibliothek <a href="https://github.com/PaulStoffregen/USBHost_t36/">USB Host Library for Teensy 3.6 and 4.0</a>. Mit dieser können USB-HID konform "Rohdaten" bis zu einer Länge von 64 Byte (und pro Millisekunde) in einem Datenpaket übertragen und empfangen werden.</p>
+<p>Wieder kam der Teensy 4.1 zum Einsatz, diesmal mit einer Teensy-speziellen Bibliothek <a href="https://github.com/PaulStoffregen/USBHost_t36/">USB Host Library for Teensy 3.6 and 4.0</a>. Mit dieser können USB-HID konform "Rohdaten" bis zu einer Länge von 64 Byte (pro Millisekunde) in einem Datenpaket übertragen und empfangen werden.</p>
 </div>
 <div class="paragraph">
 <div class="title">Java-Applikationsseite</div>
-<p>Auf Java-Seite setzte sich eine sehr leichgewichtige Bibliothek durch, die <a href="https://github.com/nyholku/purejavahidapi">Pure Java HIDApi</a>. Sie bekam den Vorzug zur <a href="https://github.com/gary-rowe/hid4java">HID4Java</a>, die eine C-Bibliothek als Abhängigkeit benötigt.</p>
+<p>Auf Java-Seite setzte sich eine sehr leichgewichtige Bibliothek durch, die <a href="https://github.com/nyholku/purejavahidapi">Pure Java HIDApi</a>. Sie bekam den Vorzug zur <a href="https://github.com/gary-rowe/hid4java">HID4Java</a>, die zusätzlich eine C-Bibliothek (z.B. auf den tcl1000-Maschinen) als Abhängigkeit benötigt.</p>
 </div>
 <div class="paragraph">
 <div class="title">Administration, Konfiguration</div>
-<p>Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen, z.B. auf den <code>tcl100</code>-Maschinen, die Notwendigkeit einer <code>UDEV</code>-Regel, z.B. in einer Datei <code>66-hid-rules</code> im Verzeichnis <code>/etc/udev/rules.d</code>:</p>
+<p>Administrationsaufwand ergibt sich für die Java-Applikationsseite auf Linux-Systemen (z.B. auf den <code>tcl1000</code>-Maschinen), die Notwendigkeit einer <code>UDEV</code>-Regel, z.B. in einer Datei <code>66-hid-rules</code> im Verzeichnis <code>/etc/udev/rules.d</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -394,7 +395,7 @@ sudo usermod -a -<span style="color:#036;font-weight:bold">G</span> tty username
 </div>
 <div class="paragraph">
 <div class="title">Java-Applikationsseite</div>
-<p>Die Potiboard-Applikation kann die MIDI-Daten in ihrem Java-Code ohne zusätzliche Abhängigkeiten empfangen MIDI direkt von der <code>JRE</code> unterstützt durch die <code>Java Sound API</code>.</p>
+<p>Die Potiboard-Applikation kann die MIDI-Daten in ihrem Java-Code ohne zusätzliche Abhängigkeiten empfangen, MIDI wird direkt von der <code>JRE</code> unterstützt, ist enthalten in der <code>Java Sound API</code>.</p>
 </div>
 <div class="paragraph">
 <div class="title">Administration, Konfiguration</div>
@@ -402,9 +403,9 @@ sudo usermod -a -<span style="color:#036;font-weight:bold">G</span> tty username
 </div>
 <div class="paragraph">
 <div class="title">Bemerkung</div>
-<p>Um größere Datenlängen in einem Datenpaket zu verschicken (&gt; als zwei Byte), müssen sogenannte <code>Sysex</code>, oder <code>MIDI system exclusive messages</code> benutzt werden.
-Bei dieser Art von Nachrichten sind mehr als drei Byte Datenpaketlänge erlaubt.
-Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierungen vom 8-Bit-System in 7-Bit-System und zurück im Code sowohl auf Mikroprozessor-Seite (`C), als auch auf Java-Applikationsseite notwendig sind.</p>
+<p>Möchte man mit MIDI Datentypen größer als zwei Byte in einem Datenpaket verschicken, müssen sogenannte <code>Sysex</code>, oder <code>MIDI system exclusive messages</code> benutzt werden.
+Sie dienen normalerweise zur Konfiguration zwischen den MIDI-Geräten. Bei dieser Art von Nachrichten sind mehr als drei Byte Datenpaketlänge erlaubt.
+Allerdings können in jedem übertragenen Byte nur 7 Bit genutzt werden (1 Bit ist ein Status-Bit), so dass Konvertierungen vom 8-Bit-System in 7-Bit-System und zurück sowohl auf Mikroprozessor-Seite (<code>C</code>), als auch auf Java-Applikationsseite notwendig sind. Dieser <code>C</code> und <code>Java</code>-Code wurde für den Test implementiert.</p>
 </div>
 </div>
 </div>
@@ -436,7 +437,7 @@ Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierung
 </ul>
 </div>
 <div class="paragraph">
-<p>Die eingesetzte Software auf Mikrocontroller und auf Potiboard-Applikationsseite sollte aus möglichst gut gepflegten und verständlichen Open-Source Projekten mit hoher Verbreitung stammen. Dies kann auch Auswirkungen auf die Wahl des Mikrocontrollers haben. Der notwendige selbst geschriebene Soure-Code sollte möglichst einfach wartbar sein. Auf dem Mikrocontroller kommen die Programmiersprachen Assembler, C und Python in Frage, auf der Potiboard-Applikationsseite werden Java-basierte Lösungen preferiert.</p>
+<p>Die eingesetzte Software auf Mikrocontroller und auf Potiboard-Applikationsseite sollte aus möglichst gut gepflegten und verständlichen Open-Source Projekten mit hoher Verbreitung stammen. Dieser Punkt bestimmt u.a. die Wahl des Mikrocontrollers. Der notwendige selbst geschriebene Soure-Code sollte möglichst einfach wartbar sein. Auf dem Mikrocontroller kommen die Programmiersprachen Assembler, C und Python in Frage, auf der Potiboard-Applikationsseite werden Java-basierte Lösungen preferiert.</p>
 </div>
 </div>
 </div>
@@ -445,12 +446,12 @@ Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierung
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
-<p><input type="checkbox" data-item-complete="1" checked> <strong>Administration</strong>s-, Konfigurationsaufwand</p>
+<p><input type="checkbox" data-item-complete="1" checked> <strong>Admin</strong>istrations-, Konfigurationsaufwand</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Der Aufwand für zusätzliche Hardware und Software, wie z.B. der KonzentratorPC für <code>Webflux</code> oder ein <code>MQTT-Server</code>(Linux-Administration, Hardwarepflege) oder zusätzliche Stromversorgungswege als auch der Aufwand für Konfigurationen (Netzwerk-Adressen-Pflege) sollte minimal gehalten werden. Unter diesen Punkt fallen auch notwendige Linux-Anpassungen z.B. auf den tcl100 Rechnern für den HKR.</p>
+<p>Der Aufwand für zusätzliche Hardware und Software, wie z.B. der KonzentratorPC für <code>Webflux</code> oder ein <code>MQTT-Server</code>(Linux-Administration, Hardwarepflege) oder zusätzliche Stromversorgungswege als auch der Aufwand für Konfigurationen (Netzwerk-Adressen-Pflege) sollte minimal gehalten werden. Unter diesen Punkt fallen auch notwendige Linux-Anpassungen z.B. auf den tcl1000 Rechnern für den HKR/FCC.</p>
 </div>
 </div>
 </div>
@@ -464,7 +465,7 @@ Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierung
 </ul>
 </div>
 <div class="paragraph">
-<p>Die vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte zwischen max. bei 10 ms (100 Hz) liegen, besser deutlich niedriger.</p>
+<p>Die Geschwindigkeit der Imkremente vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte zwischen max. bei 10 ms (100 Hz) liegen, besser deutlich niedriger.</p>
 </div>
 </div>
 </div>
@@ -490,27 +491,27 @@ Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierung
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Versuch der Einordnung der Stärken und Schwächen der verschiedenen Technologien</caption>
 <colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 11.1112%;">
+<col style="width: 15.2941%;">
+<col style="width: 5.8823%;">
+<col style="width: 7.0588%;">
+<col style="width: 12.9411%;">
+<col style="width: 11.7647%;">
+<col style="width: 9.4117%;">
+<col style="width: 20%;">
+<col style="width: 9.4117%;">
+<col style="width: 8.2356%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Eigenschaft&#8201;&#8212;&#8201;Technologie</th>
+<th class="tableblock halign-left valign-top">Eigenschaft / Technologie</th>
 <th class="tableblock halign-left valign-top">USB</th>
-<th class="tableblock halign-left valign-top">Netzwerk</th>
+<th class="tableblock halign-left valign-top">Netz-werk</th>
 <th class="tableblock halign-left valign-top">Hardware</th>
 <th class="tableblock halign-left valign-top">Software</th>
-<th class="tableblock halign-left valign-top">Administration</th>
+<th class="tableblock halign-left valign-top">Admin</th>
 <th class="tableblock halign-left valign-top">Geschwindigkeit</th>
 <th class="tableblock halign-left valign-top">Duplex</th>
-<th class="tableblock halign-left valign-top">&sum; *</th>
+<th class="tableblock halign-left valign-top">&#8721;*</th>
 </tr>
 </thead>
 <tbody>
@@ -564,10 +565,10 @@ Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierung
 <td class="tableblock halign-left valign-top"><div class="literal"><pre></pre></div></td>
 <td class="tableblock halign-left valign-top"><div class="literal"><pre>***</pre></div></td>
 <td class="tableblock halign-left valign-top"><div class="literal"><pre>***</pre></div></td>
-<td class="tableblock halign-left valign-top"><div class="literal"><pre>**</pre></div></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre>*</pre></div></td>
 <td class="tableblock halign-left valign-top"><div class="literal"><pre>***</pre></div></td>
 <td class="tableblock halign-left valign-top"><div class="literal"><pre>**</pre></div></td>
-<td class="tableblock halign-left valign-top"><div class="literal"><pre> 13</pre></div></td>
+<td class="tableblock halign-left valign-top"><div class="literal"><pre> 12</pre></div></td>
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">USB-HID</p></th>
@@ -581,7 +582,7 @@ Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierung
 <td class="tableblock halign-left valign-top"><div class="literal"><pre> 11</pre></div></td>
 </tr>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock">USB-MIDI</p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock">USB-MID</p></th>
 <td class="tableblock halign-left valign-top"><div class="literal"><pre>X</pre></div></td>
 <td class="tableblock halign-left valign-top"><div class="literal"><pre></pre></div></td>
 <td class="tableblock halign-left valign-top"><div class="literal"><pre>***</pre></div></td>
@@ -622,7 +623,7 @@ Allerdings können in einem Byte nur 7 Bit genutzt werden, so dass Konvertierung
 </tfoot>
 </table>
 <div class="paragraph">
-<p>Die Tabelle dient nur als Diskussionsgrundlage für die verschiedenen Technologien. Für einen Vergleich wären die verschiedenen Eigenschaften (Spalten) zu gewichten. Die &sum; * Spalte dient nicht der objektiven Bewertung;</p>
+<p>Die Tabelle dient nur als Diskussionsgrundlage für die verschiedenen Technologien. Für einen Vergleich wären die verschiedenen Eigenschaften (Spalten) zu gewichten. Die &#8721;* Spalte dient <strong>nicht</strong> zur objektiven Bewertung.</p>
 </div>
 </div>
 </div>
@@ -651,8 +652,8 @@ Der Teensy 4.1 ist ein kosteneffizienter, gut verfügbarer und hoch performanter
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Das USB-Midi Protokoll bietet als einzige USB-Datenübertragungstechnologie echtes Plug-and-Play an einem Linux-basierten Host (wie z.B. TCL100).
-Auf der Java-Seite, also bei der Entwicklung und Wartung der Potiboard-Applikation, wird MIDI direkt von der <code>JRE</code> unterstützt durch die <code>Java Sound API</code>. D.h. es werden wahrscheinlich nie zusätzliche Bibliotheken oder Abhängigkeiten einzubinden sein.
+Das USB-Midi Protokoll bietet als einzige USB-Datenübertragungstechnologie echtes Plug-and-Play an einem Linux-basierten Host (wie z.B. tcl1000).
+Auf der Java-Seite, also bei der Entwicklung und Wartung der Potiboard-Applikation, wird MIDI direkt von der <code>JRE</code> unterstützt durch die <code>Java Sound API</code>. Es werden auf absehbare Zeit keine zusätzlichen Bibliotheken oder Abhängigkeiten einzubinden sein.
 Diesen Vorteilen stehen gegenüber eine leicht erhöhte Komplexität bei der Programmierung der Übertragungsdatenpakete und eine niedrigere aber noch ausreichende Datenübertragungsrate.
 </td>
 </tr>
@@ -660,26 +661,27 @@ Diesen Vorteilen stehen gegenüber eine leicht erhöhte Komplexität bei der Pro
 </div>
 <div class="paragraph">
 <p>Wenn USB als Datenübertragungssystem als möglicherweise nicht ausreichend bewertet wird, müsste die Evaluierung der netzwerk-basierten Technologien weitergeführt werden.
-Eine rein <em>socket-basierte</em> Verbindung von einem netzwerk-fähigen Mikrocontroller zur java-basierten Potiboard-Applikation wäre ein begehbarer Weg oder eine auf das <em>ZeroMQ-Messaging</em> basierende Übertragung zwischen Mikrokontroller und der Potiboard-Applikation..</p>
+Eine rein <em>socket-basierte</em> Verbindung von einem netzwerk-fähigen Mikrocontroller zur java-basierten Potiboard-Applikation wäre ein begehbarer Weg. Möglich wäre sicher auch die auf das <em>ZeroMQ-Messaging</em> basierende Übertragung zwischen Mikrokontroller und der Potiboard-Applikation..</p>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="common/img/teensy_on_table.png" alt="Ciao"></span></p>
+<div class="paragraph center">
+<div class="title">Dankeschön!</div>
+<p><span class="image"><img src="common/img/teensy_on_table.png" alt="Ciao" width="450" height="200"></span></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_annex">Annex</h2>
+<h2 id="_themen_die_zur_evaluierung_beigetragen_haben_aber_nicht_tiefer_diskutiert_werden_stichpunktartig">Themen, die zur Evaluierung beigetragen haben, aber nicht tiefer diskutiert  werden (stichpunktartig)</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>GPS-System zur Uhrensynchronisation für Zeitmessungen mit ~  30 &#181;s Genauigkeit</p>
+<p>GPS-System zur Uhrensynchronisation für Zeitmessungen mit ~  30 &#181;s Genauigkeit.</p>
 </li>
 <li>
-<p>7-Bit Arithmetische Kodierung zur Darstellung von Datentypengrößen größer als 7 Bit (&gt;127) (MIDI-Anforderung)</p>
+<p>Arithmetische Kodierung mit 7-Bit pro Byte zur Darstellung von Datentypengrößen größer als 7 Bit (&gt;127) (MIDI-speziell).</p>
 </li>
 <li>
-<p>Nutzung der <code>State Machine</code> für den GPIO-Verkehr zur Vermeidung von CPU-Interrupts beim Raspberry PI Nano</p>
+<p>Nutzung der <code>State Machine</code> für die GPIO-Kommunikation ohne CPU-Interrupts beim Raspberry PI Nano.</p>
 </li>
 </ul>
 </div>
@@ -688,8 +690,8 @@ Eine rein <em>socket-basierte</em> Verbindung von einem netzwerk-fähigen Mikroc
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.1<br>
-Last updated 2022-11-09 11:57:52 +0100
+Version v1.1<br>
+Last updated 2022-11-10 16:59:02 +0100
 </div>
 </div>
 <div id="content">

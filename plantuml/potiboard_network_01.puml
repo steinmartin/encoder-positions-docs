@@ -15,15 +15,15 @@ nwdiag {
        encoder_1;
        encoder_2;
        encoder_n;
-      microprocessor;
+      microController;
       concentratorPC;
     }
     color = "gray"
     Encoder_1 [shape = control];
     Encoder_2 [shape = control];
     Encoder_n [shape = control];
-    microprocessor [shape = component];
-    microprocessor -- concentratorPC;
+    microController [shape = component];
+    microController -- concentratorPC;
    concentratorPC [shape = node, address = USB-Serial];
   }
 

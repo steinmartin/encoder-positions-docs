@@ -9,9 +9,8 @@ title USB based encoder counter transmission
 ' endlegend
 
 node tcl1000 #lightgreen;line:black;text:black
-node microprocessor #lightblue;line:black;text:black
+node microController #lightblue;line:black;text:black
 node encoder #lightblue;line:black;text:black
-microprocessor *-- encoder : GPIO
-tcl1000 -- microprocessor : USB-Serial, USB-HID, USB-Midi
-' tcl100 -- microprocessor : Network, e.g. Socket or ZeroMQ
+microController *-- encoder : GPIO
+tcl1000 -- microController : USB-Serial, USB-HID, USB-Midi
 @enduml

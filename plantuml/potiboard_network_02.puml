@@ -15,14 +15,14 @@ nwdiag {
        encoder_1;
        encoder_2;
        encoder_n;
-       microprocessor;
+       microController;
     }
 
     color = "gray"
     encoder_1 [shape = control];
     encoder_2 [shape = control];
     encoder_n [shape = control];
-    microprocessor [shape = component];
+    microController [shape = component];
   }
 
   network Network {
@@ -37,7 +37,7 @@ nwdiag {
   acc_net [shape = cloud];
       potiboardApp [shape = node, address = ZeroMQ/MQTT];
       MQTTServer [shape = node, address = MQTT];
-      microprocessor [address = ZeroMQ/MQTT];
+      microController [address = ZeroMQ/MQTT];
   }
 }
 @enduml
