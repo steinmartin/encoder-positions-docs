@@ -1,0 +1,23 @@
+= Document-Historie
+
+[cols="1,3a,2,2,5a", options="header"]
+|===
+|Vers.|Prepared/Checked by|Date|Date of Release|Comments
+
+5+^h|Release 1.2
+|1.2|M.Stein|15/11/2022|15/11/2022|
+====
+* Small syntax corrections.
+* Addes this Release-Historie table
+
+5+^h|Release 1.1
+|1.1|M.Stein|07/11/2022|07/11/2022|
+====
+* First version version for evaluation meeting.
+
+5+^h|Release 0.1
+|0.1|M.Stein|08/07/2022|08/07/2022|
+====
+* Internal presentation about the network based tests.
+|===
+
