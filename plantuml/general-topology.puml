@@ -8,8 +8,8 @@ title General topology for connecting a potiboard encoder device
 '   ARM-based MC Teensy 4.1 (Arduino) or STM32
 ' endlegend
 
-node tcl100 as "potiboard-app\n         on\n     tcl100" #lightgreen;line:black;text:black
+node tcl1000 as "potiboard-app\n         on\n     tcl1000" #lightgreen;line:black;text:black
 node potiboard_encoder_device #lightblue;line:black;text:black
-tcl100 -- potiboard_encoder_device : Network or USB
+tcl1000 -- potiboard_encoder_device : Network or USB
 
 @enduml

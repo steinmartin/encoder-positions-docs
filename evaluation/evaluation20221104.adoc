@@ -9,8 +9,8 @@
 :keywords: Asciidoctor, header, footer, docinfo
 :author: Achim Bloch-Späth <a.bloch-spaeth@gsi.de>, Martin Stein <m.stein@gsi.de>
 :email: a.bloch-spaeth@gsi.de, m.stein@gsi.de
-:revnumber: 1.2
-:revdate: 15.11.2022
+:revnumber: 1.3
+:revdate: 28.11.2022
 :doctype: book
 :toc:
 :toc-title: Inhaltsverzeichnis
@@ -158,7 +158,7 @@ sudo usermod -a -G lock username
 sudo usermod -a -G tty username
 ----
 
-Zusätzlich wird auf dem Host-Rechner (z.B. auf den tcl1000-Maschinen) auf der Java-Applikationsseite eine C-Bibliothek benötigt, die die bei der Java-Bibliothek https://fazecast.github.io/jSerialComm/[jSerialComm mitgeliefert wird.
+Zusätzlich wird auf dem Host-Rechner (z.B. auf den tcl1000-Maschinen) auf der Java-Applikationsseite eine C-Bibliothek benötigt, die die bei der Java-Bibliothek https://fazecast.github.io/jSerialComm/ jSerialComm mitgeliefert wird.
 
 === Testsystem mit USB-HID
 .Mikrokontroller-Seite
@@ -214,11 +214,11 @@ Der Aufwand für zusätzliche Hardware und Software, wie z.B. der KonzentratorPC
 [%interactive]
 * [*] **Geschwindigkeit** der Signalübertragung der Inkremente der Encoder
 
-Die Geschwindigkeit der Imkremente vom Nutzer über den Drehgeber zum Mikrocontroller und dann in das Java-Programm sollte zwischen max. bei 10 ms (100 Hz) liegen, besser deutlich niedriger.
+Die Geschwindigkeit einer Imkrementübertragung vom Nutzer über den Drehgeber zum Mikrocontroller und bis die java-basierte Potiboard-App sollte bei max. bei 10 ms (100 Hz) liegen.
 ====
 ====
 [%interactive]
-* [*] **Duplex**-Signalübertragung, nicht nur für die Inkremente der Encoder in eine Richtung, sondern auch in der Gegenrichtung von der Portiboard-App zurück zum Potiboard-Encoder-Device. 
+* [*] **Duplex**-Signalübertragung sollte technisch möglich sein. Eventuell ist gewünscht, nicht nur die Inkremente der Encoder vom Drehgeber in die Java-basierte Potiboard-App zu übertragen, sondern auch Informationen in Gegenrichtung von der Portiboard-App zurück zum Potiboard-Encoder-Device zu senden.
 
 Um die Benutzererfahrung am Potiboard-Encoder-Device zu verbessern, sollte es technisch möglich sein, Informationen wie Status der Verbindung, oder auch Magnet-Nomenklaturen an das Potiboard-Encoder-Device zu übertragen.
 ====
